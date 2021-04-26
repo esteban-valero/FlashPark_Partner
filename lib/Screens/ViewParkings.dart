@@ -38,7 +38,7 @@ class ViewParking extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditPerfil(),
+                      builder: (context) => CustomDetailParking(),
                     ),
                   );
                   // Update the state of the app
