@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/EditPerfil.dart';
-import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 
 class ViewReservatios extends StatelessWidget {

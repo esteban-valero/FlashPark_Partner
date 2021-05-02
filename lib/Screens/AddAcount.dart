@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
+
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
-import 'package:hello_world_flutter/main.dart';
+
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
-import 'package:hello_world_flutter/Screens/EditPerfil.dart';
 
 class AddAccount extends StatelessWidget {
   @override

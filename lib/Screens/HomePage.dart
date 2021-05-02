@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/CreateAcount.dart';
-import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
-import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/RestorePasword.dart';
+import 'package:provider/provider.dart';
+import 'package:hello_world_flutter/Services/AuthenticationService.dart';
 
-class LandingScreen extends StatelessWidget {
-  const LandingScreen({Key key}) : super(key: key);
+class Home extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +44,9 @@ class LandingScreen extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeFlashPark()),
-          );
+          context.read()<AuthenticationService>().signIn(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
         },
         child: Text("Login",
             textAlign: TextAlign.center,

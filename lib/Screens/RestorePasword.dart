@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
-import 'package:hello_world_flutter/main.dart';
+
 import 'package:hello_world_flutter/utils/text_styles.dart';
+import 'HomePage.dart';
 
 class RestorePassword extends StatelessWidget {
   const RestorePassword({Key key}) : super(key: key);
@@ -43,7 +44,7 @@ class RestorePassword extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            MaterialPageRoute(builder: (context) => Home()),
           );
         },
         child: Text("Restaurar Contraseña",

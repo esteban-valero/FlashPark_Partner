@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world_flutter/Services/AuthenticationService.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
-import 'package:hello_world_flutter/main.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
+import 'package:provider/provider.dart';
+import 'HomePage.dart';
 
 class CreateAccount extends StatelessWidget {
-  const CreateAccount();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
     final emailField = TextField(
+      controller: emailController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
@@ -45,6 +49,7 @@ class CreateAccount extends StatelessWidget {
           )),
     );
     final passwordField = TextField(
+        controller: passwordController,
         obscureText: true,
         style: TextStyles.appPartnerTextStyle,
         decoration: InputDecoration(
@@ -63,10 +68,9 @@ class CreateAccount extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MyHomePage()),
-          );
+          context.read<AuthenticationService>().signUp(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
         },
         child: Text("Registrarse",
             textAlign: TextAlign.center,
@@ -77,7 +81,12 @@ class CreateAccount extends StatelessWidget {
 
     final loginNow = TextButton(
       child: TextButton(
-        onPressed: () => {Navigator.pop(context)},
+        onPressed: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          )
+        },
         child: Text("¡Inicia sesión aqui!",
             textAlign: TextAlign.center,
             style: TextStyles.appPartnerTextStyle

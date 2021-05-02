@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world_flutter/Services/AuthenticationService.dart';
 import 'package:hello_world_flutter/common/customDetailParking.dart';
-import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
-import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
-import 'package:hello_world_flutter/main.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
+import 'package:provider/provider.dart';
 import 'package:hello_world_flutter/Screens/EditPerfil.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
 
@@ -180,10 +178,7 @@ class ViewParking extends StatelessWidget {
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
+                  context.read<AuthenticationService>().signOut();
                 },
               ),
               decoration: BoxDecoration(
