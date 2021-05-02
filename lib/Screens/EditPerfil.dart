@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
-import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
+import 'package:hello_world_flutter/Services/AuthenticationService.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
-import 'package:hello_world_flutter/main.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
+import 'package:provider/provider.dart';
 
 class EditPerfil extends StatelessWidget {
   const EditPerfil({Key key}) : super(key: key);
@@ -77,7 +77,7 @@ class EditPerfil extends StatelessWidget {
             MaterialPageRoute(builder: (context) => HomeFlashPark()),
           );
         },
-        child: Text("Login",
+        child: Text("Guardar",
             textAlign: TextAlign.center,
             style: TextStyles.appPartnerTextStyle
                 .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -226,10 +226,7 @@ class EditPerfil extends StatelessWidget {
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
+                  context.read<AuthenticationService>().signOut();
                 },
               ),
               decoration: BoxDecoration(
