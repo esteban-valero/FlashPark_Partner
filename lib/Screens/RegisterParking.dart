@@ -7,16 +7,27 @@ import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:provider/provider.dart';
 
 class RegisterParking extends StatelessWidget {
-  const RegisterParking({Key key}) : super(key: key);
+  final TextEditingController nameController = TextEditingController();
+
+  final TextEditingController adressController = TextEditingController();
+
+  final TextEditingController carsController = TextEditingController();
+
+  final TextEditingController motosController = TextEditingController();
+
+  final TextEditingController scootersController = TextEditingController();
+
+  final TextEditingController bicisController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final nameField = TextField(
+      controller: nameController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese el nombre de su parqueadero",
+          hintText: "Nombre de tu parqueadero",
           labelText: "Nombre",
           labelStyle: TextStyle(color: Colors.black),
           enabledBorder: OutlineInputBorder(
@@ -26,11 +37,12 @@ class RegisterParking extends StatelessWidget {
     );
 
     final direccionField = TextField(
+      controller: adressController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese la dirección de su parqueadero",
+          hintText: "Dirección de tu parqueadero",
           labelText: "Dirección",
           labelStyle: TextStyle(color: Colors.black),
           enabledBorder: OutlineInputBorder(
@@ -40,11 +52,12 @@ class RegisterParking extends StatelessWidget {
     );
 
     final carsCapacityField = TextField(
+      controller: carsController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese la capacidad de carros de su parqueadero",
+          hintText: "Capacidad de carros",
           labelText: "Capacidad Carros",
           labelStyle: TextStyle(color: Colors.black),
           enabledBorder: OutlineInputBorder(
@@ -54,11 +67,12 @@ class RegisterParking extends StatelessWidget {
     );
 
     final motosCapacityField = TextField(
+      controller: motosController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese la capacidad de motos de su parqueadero",
+          hintText: "Capacidad de motos",
           labelText: "Capacidad de motos",
           labelStyle: TextStyle(color: Colors.black),
           enabledBorder: OutlineInputBorder(
@@ -68,11 +82,12 @@ class RegisterParking extends StatelessWidget {
     );
 
     final scooterCapacityField = TextField(
+      controller: scootersController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese la capacidad de scooters de su parqueadero",
+          hintText: "Capacidad de scooters",
           labelText: "Capacidad de scooters",
           labelStyle: TextStyle(color: Colors.black),
           enabledBorder: OutlineInputBorder(
@@ -82,11 +97,12 @@ class RegisterParking extends StatelessWidget {
     );
 
     final biciCapacityField = TextField(
+      controller: bicisController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese la capacidad de bicicletas de su parqueadero",
+          hintText: "Capacidad de bicicletas",
           labelText: "Capacidad de bicicletas",
           labelStyle: TextStyle(color: Colors.black),
           enabledBorder: OutlineInputBorder(
@@ -104,6 +120,13 @@ class RegisterParking extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
+          context.read<AuthenticationService>().registerParking(
+              nameController.text.trim(),
+              adressController.text.trim(),
+              carsController.text.trim(),
+              motosController.text.trim(),
+              scootersController.text.trim(),
+              bicisController.text.trim());
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HomeFlashPark()),

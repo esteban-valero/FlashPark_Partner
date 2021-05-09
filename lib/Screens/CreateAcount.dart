@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Services/AuthenticationService.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
@@ -8,6 +11,8 @@ import 'HomePage.dart';
 class CreateAccount extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phonrController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,7 @@ class CreateAccount extends StatelessWidget {
     );
 
     final name = TextField(
+      controller: nameController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
@@ -38,6 +44,7 @@ class CreateAccount extends StatelessWidget {
           )),
     );
     final phone = TextField(
+      controller: phonrController,
       obscureText: false,
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
@@ -70,7 +77,9 @@ class CreateAccount extends StatelessWidget {
         onPressed: () {
           context.read<AuthenticationService>().signUp(
               email: emailController.text.trim(),
-              password: passwordController.text.trim());
+              password: passwordController.text.trim(),
+              name: nameController.text.trim(),
+              phone: phonrController.text.trim());
         },
         child: Text("Registrarse",
             textAlign: TextAlign.center,
