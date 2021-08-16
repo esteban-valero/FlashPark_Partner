@@ -1,6 +1,6 @@
-import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hello_world_flutter/Screens/HomePage.dart';
 
@@ -19,7 +19,7 @@ class AuthenticationService {
           email: email, password: password);
       return "Signed in ";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      return Future.error(e.message);
     }
   }
 
@@ -42,7 +42,7 @@ class AuthenticationService {
       });
       return "Signed UP";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      return Future.error(e.message);
     }
   }
 

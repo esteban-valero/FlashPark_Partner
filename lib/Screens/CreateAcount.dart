@@ -2,21 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Services/AuthenticationService.dart';
+import 'package:hello_world_flutter/Services/FirebaseServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:provider/provider.dart';
 import 'HomePage.dart';
 
 class CreateAccount extends StatelessWidget {
+  final firestoreInstance = FirebaseFirestore.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phonrController = TextEditingController();
+  final GlobalKey<FormState> keyForm = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+
+    formItemsDesign(icon, item) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 7),
+        child: Card(
+          child: ListTile(leading: Icon(icon), title: item),
+        ),
+      );
+    }
 
     final emailField = TextField(
       controller: emailController,
@@ -24,25 +35,42 @@ class CreateAccount extends StatelessWidget {
       style: TextStyles.appPartnerTextStyle,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
+          hintText: "E-mail",
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide(color: Colors.orange),
           )),
     );
 
-    final name = TextField(
-      controller: nameController,
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Nombre",
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
+    final name = TextFormField(
+        controller: nameController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Nombre",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateName);
+
+    final name2 = formItemsDesign(
+        Icons.person,
+        TextFormField(
+          obscureText: false,
+          style: TextStyles.appPartnerTextStyle,
+          controller: nameController,
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              hintText: "Nombre",
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: Colors.orange),
+              )),
+          //validator: validateName,
+        ));
+
     final phone = TextField(
       controller: phonrController,
       obscureText: false,
@@ -55,13 +83,14 @@ class CreateAccount extends StatelessWidget {
             borderSide: BorderSide(color: Colors.orange),
           )),
     );
+
     final passwordField = TextField(
         controller: passwordController,
         obscureText: true,
         style: TextStyles.appPartnerTextStyle,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Password",
+            hintText: "Contraseña",
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
                 borderSide: BorderSide(color: Colors.orange))));
@@ -115,7 +144,7 @@ class CreateAccount extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Container(
-              height: 500,
+              height: 550,
               width: 350,
               padding: EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.only(top: 250, left: 20),
@@ -123,22 +152,25 @@ class CreateAccount extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 30.0),
-                  emailField,
-                  SizedBox(height: 20.0),
-                  name,
-                  SizedBox(height: 20.0),
-                  passwordField,
-                  SizedBox(height: 20.0),
-                  phone,
-                  SizedBox(height: 20.0),
-                  registerButton,
-                  SizedBox(height: 20.0),
-                  Text("¿Ya tienes una cuenta?"),
-                  loginNow
-                ],
+              child: new Form(
+                key: keyForm,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 30.0),
+                    emailField,
+                    SizedBox(height: 20.0),
+                    name,
+                    SizedBox(height: 20.0),
+                    passwordField,
+                    SizedBox(height: 20.0),
+                    phone,
+                    SizedBox(height: 20.0),
+                    registerButton,
+                    SizedBox(height: 20.0),
+                    Text("¿Ya tienes una cuenta?"),
+                    loginNow
+                  ],
+                ),
               ),
             ),
           ),
@@ -148,4 +180,15 @@ class CreateAccount extends StatelessWidget {
     // ignore: todo
     // TODO: implement build
   }
+}
+
+String validateName(String value) {
+  String pattern = r'(^[a-zA-Z ]*$)';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return "El nombre es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "El nombre debe de ser a-z y A-Z";
+  }
+  return null;
 }
