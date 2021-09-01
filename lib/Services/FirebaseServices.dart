@@ -14,13 +14,15 @@ class AuthenticationService {
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
 
   Future<String> signIn({String email, String password}) async {
-    try {
+    print(email + password);
+    /*try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      print("OK");
       return "Signed in ";
     } on FirebaseAuthException catch (e) {
       return Future.error(e.message);
-    }
+    }*/
   }
 
   Future<String> signUp(

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:hello_world_flutter/Screens/CreateAcount.dart';
+import 'package:hello_world_flutter/Screens/HomePage.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
 import 'package:hello_world_flutter/Services/FirebaseServices.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +60,6 @@ class AuthenticatorWrapper extends StatelessWidget {
     if (firebaseUser != null) {
       return HomeFlashPark();
     }
-    return CreateAccount();
+    return Home();
   }
 }

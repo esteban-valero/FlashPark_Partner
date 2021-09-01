@@ -12,6 +12,8 @@ class CreateAccount extends StatelessWidget {
   final firestoreInstance = FirebaseFirestore.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordConfirmController =
+      TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phonrController = TextEditingController();
   final GlobalKey<FormState> keyForm = new GlobalKey();
@@ -20,27 +22,27 @@ class CreateAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
-    formItemsDesign(icon, item) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 7),
-        child: Card(
-          child: ListTile(leading: Icon(icon), title: item),
-        ),
-      );
+    String validatePassword(String value) {
+      //print("valor $value passsword ${passwordController.text}");
+      if (value.length == 0) return "La contraseña es necesaria";
+      if (value != passwordController.text) {
+        return "Las contraseñas no coinciden";
+      }
+      return null;
     }
 
-    final emailField = TextField(
-      controller: emailController,
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "E-mail",
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
+    final emailField = TextFormField(
+        controller: emailController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "E-mail",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateEmail);
 
     final name = TextFormField(
         controller: nameController,
@@ -55,36 +57,20 @@ class CreateAccount extends StatelessWidget {
             )),
         validator: validateName);
 
-    final name2 = formItemsDesign(
-        Icons.person,
-        TextFormField(
-          obscureText: false,
-          style: TextStyles.appPartnerTextStyle,
-          controller: nameController,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Nombre",
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-                borderSide: BorderSide(color: Colors.orange),
-              )),
-          //validator: validateName,
-        ));
+    final phone = TextFormField(
+        controller: phonrController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Télefono",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateMobile);
 
-    final phone = TextField(
-      controller: phonrController,
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Télefono",
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
-
-    final passwordField = TextField(
+    final passwordField = TextFormField(
         controller: passwordController,
         obscureText: true,
         style: TextStyles.appPartnerTextStyle,
@@ -95,6 +81,18 @@ class CreateAccount extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
                 borderSide: BorderSide(color: Colors.orange))));
 
+    final passwordFieldConf = TextFormField(
+        controller: passwordConfirmController,
+        obscureText: true,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Contraseña",
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: Colors.orange))),
+        validator: validatePassword);
+
     final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -104,11 +102,14 @@ class CreateAccount extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          context.read<AuthenticationService>().signUp(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim(),
-              name: nameController.text.trim(),
-              phone: phonrController.text.trim());
+          if (keyForm.currentState.validate()) {
+            context.read<AuthenticationService>().signUp(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim(),
+                name: nameController.text.trim(),
+                phone: phonrController.text.trim());
+            keyForm.currentState.reset();
+          }
         },
         child: Text("Registrarse",
             textAlign: TextAlign.center,
@@ -144,7 +145,7 @@ class CreateAccount extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Container(
-              height: 550,
+              height: 650,
               width: 350,
               padding: EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.only(top: 250, left: 20),
@@ -162,6 +163,8 @@ class CreateAccount extends StatelessWidget {
                     name,
                     SizedBox(height: 20.0),
                     passwordField,
+                    SizedBox(height: 20.0),
+                    passwordFieldConf,
                     SizedBox(height: 20.0),
                     phone,
                     SizedBox(height: 20.0),
@@ -189,6 +192,32 @@ String validateName(String value) {
     return "El nombre es necesario";
   } else if (!regExp.hasMatch(value)) {
     return "El nombre debe de ser a-z y A-Z";
+  }
+  return null;
+}
+
+String validateEmail(String value) {
+  String pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return "El correo es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "Correo invalido";
+  } else {
+    return null;
+  }
+}
+
+String validateMobile(String value) {
+  String patttern = r'(^[0-9]*$)';
+  RegExp regExp = new RegExp(patttern);
+  if (value.length == 0) {
+    return "El telefono es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "El telefono solo debe contener numeros";
+  } else if (value.length != 10) {
+    return "El numero debe tener 10 digitos";
   }
   return null;
 }
