@@ -6,6 +6,7 @@ import 'package:hello_world_flutter/Screens/HomePage.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   var fuser = FirebaseAuth.instance.currentUser;
 
@@ -13,16 +14,15 @@ class AuthenticationService {
 
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
 
-  Future<String> signIn({String email, String password}) async {
+  Future signIn({String email, String password}) async {
     print(email + password);
-    /*try {
+    try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      print("OK");
       return "Signed in ";
     } on FirebaseAuthException catch (e) {
-      return Future.error(e.message);
-    }*/
+      return Future.error(e.message.toString());
+    }
   }
 
   Future<String> signUp(

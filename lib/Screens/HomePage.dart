@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/CreateAcount.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
@@ -50,9 +51,9 @@ class Home extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           if (keyForm.currentState.validate()) {
-            //print(emailController.text.trim());
-            //print(passwordController.text.trim());
-            context.read()<AuthenticationService>().signIn(
+            final provider =
+                Provider.of<AuthenticationService>(context, listen: false);
+            provider.signIn(
                 email: emailController.text.trim(),
                 password: passwordController.text.trim());
             keyForm.currentState.reset();
