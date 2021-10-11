@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/Screens/Perfil.dart';
-import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
-import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
@@ -204,7 +202,7 @@ class EditPerfil extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Perfil(),
+                      builder: (context) => ProfileView(),
                     ),
                   );
                   // Update the state of the app

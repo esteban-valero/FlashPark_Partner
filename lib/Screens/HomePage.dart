@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/CreateAcount.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
@@ -65,33 +64,29 @@ class Home extends StatelessWidget {
     );
 
     final forgotPassword = TextButton(
-      child: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => RestorePassword()),
-          );
-        },
-        child: Text("¿Olvidaste tu contraseña?",
-            textAlign: TextAlign.center,
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(color: Colors.grey, fontSize: 15)),
-      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RestorePassword()),
+        );
+      },
+      child: Text("¿Olvidaste tu contraseña?",
+          textAlign: TextAlign.center,
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(color: Colors.grey, fontSize: 15)),
     );
 
     final createAccount = TextButton(
-      child: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateAccount()),
-          );
-        },
-        child: Text("Crea tu cuenta",
-            textAlign: TextAlign.center,
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(color: Colors.grey, fontSize: 15)),
-      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateAccount()),
+        );
+      },
+      child: Text("Crea tu cuenta",
+          textAlign: TextAlign.center,
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(color: Colors.grey, fontSize: 15)),
     );
 
     return Stack(

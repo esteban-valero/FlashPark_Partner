@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hello_world_flutter/Screens/CreateAcount.dart';
@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       auth: AuthService(),
+      db: FirebaseFirestore.instance,
       child: MaterialApp(
           title: "Travel Budget App",
           theme: ThemeData(

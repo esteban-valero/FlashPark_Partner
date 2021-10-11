@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/TermsOfUse.dart';
-import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
@@ -122,18 +119,16 @@ class CreateAccount extends StatelessWidget {
     );
 
     final loginNow = TextButton(
-      child: TextButton(
-        onPressed: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),
-          )
-        },
-        child: Text("¡Inicia sesión aqui!",
-            textAlign: TextAlign.center,
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(color: Colors.grey, fontSize: 15)),
-      ),
+      onPressed: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        )
+      },
+      child: Text("¡Inicia sesión aqui!",
+          textAlign: TextAlign.center,
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(color: Colors.grey, fontSize: 15)),
     );
 
     return Stack(

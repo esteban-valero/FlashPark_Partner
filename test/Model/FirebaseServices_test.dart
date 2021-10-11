@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 

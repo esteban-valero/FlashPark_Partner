@@ -10,12 +10,22 @@ class AuthService {
         (User user) => user?.uid,
       );
 
+  Future<String> getCurrentUID() async {
+    return (_firebaseAuth.currentUser).uid;
+  }
+
+  Future getCurrentUser() async {
+    return _firebaseAuth.currentUser;
+  }
+
   // Email & Password Sign Up
   Future<String> signUp(
       String email, String password, String name, String phone) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      await updateUserName(name, authResult.user);
 
       firestoreInstance
           .collection("Partners")
@@ -32,6 +42,11 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       return Future.error(e.message);
     }
+  }
+
+  Future updateUserName(String name, User currentUser) async {
+    await currentUser.updateProfile(displayName: name);
+    await currentUser.reload();
   }
 
   // Email & Password Sign In
@@ -57,7 +72,7 @@ class AuthService {
         .set({
       "Name": nombre,
       "address": adress,
-      "Cart Capacity": cars,
+      "Car Capacity": cars,
       "Motorcycle Capacity": motos,
       "Scooters Capacity": scooters,
       "Bike Capacity": bicis

@@ -1,28 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/EditPerfil.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/Screens/Perfil.dart';
 import 'package:hello_world_flutter/Screens/RegisterParking.dart';
 import 'package:hello_world_flutter/Screens/ViewParkings.dart';
 import 'package:hello_world_flutter/Services/DatabaseServices.dart';
-import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
-import 'HomePage.dart';
 
 class HomeFlashPark extends StatelessWidget {
   const HomeFlashPark({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    Future Function() UserPorfil = DatabaseManager().getUserProfile;
-
     final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(40.0),
@@ -112,7 +104,7 @@ class HomeFlashPark extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Perfil(),
+                      builder: (context) => ProfileView(),
                     ),
                   );
                   // Then close the drawer

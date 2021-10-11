@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'HomePage.dart';
 
 class RestorePassword extends StatelessWidget {
   const RestorePassword({Key key}) : super(key: key);
@@ -30,13 +29,11 @@ class RestorePassword extends StatelessWidget {
     );
 
     final loginNow = TextButton(
-      child: TextButton(
-        onPressed: () => {Navigator.pop(context)},
-        child: Text("¡Inicia sesión aqui!",
-            textAlign: TextAlign.center,
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(color: Colors.grey, fontSize: 15)),
-      ),
+      onPressed: () => {Navigator.pop(context)},
+      child: Text("¡Inicia sesión aqui!",
+          textAlign: TextAlign.center,
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(color: Colors.grey, fontSize: 15)),
     );
 
     final registerButton = Material(
