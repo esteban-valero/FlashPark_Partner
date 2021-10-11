@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/AddAcount.dart';
-import 'package:hello_world_flutter/Screens/Perfil.dart';
+import 'package:hello_world_flutter/Screens/EditPerfil.dart';
+import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
-import 'package:hello_world_flutter/Screens/EditPerfil.dart';
-import 'package:hello_world_flutter/widgets/Provider_widget.dart';
+import 'package:provider/provider.dart';
 
-class PayOut extends StatelessWidget {
-  const PayOut({Key key}) : super(key: key);
+class Perfil extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordConfirmController =
+      TextEditingController();
+  final String nameController = 'Daniel Esteban Valero';
+  final TextEditingController phonrController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = new TextEditingController();
-    var items = [
-      'XXXXXXXXXX',
-      'YYYYYYYYYY',
-      'ZZZZZZZZZZ',
-    ];
-    var hinttext = "";
-
-    final payButton = Material(
+    final saveButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(40.0),
       color: Color(0xff01A0C7),
@@ -32,31 +28,10 @@ class PayOut extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomeFlashPark()),
+            MaterialPageRoute(builder: (context) => EditPerfil()),
           );
         },
-        child: Text("Desembolsar",
-            textAlign: TextAlign.center,
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
-    final addAcountButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(40.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        color: Colors.orange,
-        minWidth: MediaQuery.of(context).size.width / 2,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddAccount()),
-          );
-        },
-        child: Text("Agregar Cuenta",
+        child: Text("Editar",
             textAlign: TextAlign.center,
             style: TextStyles.appPartnerTextStyle
                 .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -66,7 +41,7 @@ class PayOut extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Desembolsa tu dinero",
+          "Perfil",
           style: TextStyles.appPartnerTextStyle
               .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
         ),
@@ -76,86 +51,70 @@ class PayOut extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            CustomImageFPHome(),
-            Text("Partner",
-                style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 50)),
+          children: <Widget>[
+            SizedBox(
+              height: 50,
+            ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/Background.jpg'),
+                    fit: BoxFit.fill),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              width: 350,
               child: Column(
-                children: <Widget>[
-                  Text(
-                    "Tu saldo",
-                    style:
-                        TextStyles.appPartnerTextStyle.copyWith(fontSize: 30),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    "100000",
-                    style:
-                        TextStyles.appPartnerTextStyle.copyWith(fontSize: 30),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    "Seleccione la cuenta a desembolsar",
-                    style:
-                        TextStyles.appPartnerTextStyle.copyWith(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Table(
+                      // textDirection: TextDirection.rtl,
+                      //defaultVerticalAlignment: TableCellVerticalAlignment.top,
+                      defaultColumnWidth: IntrinsicColumnWidth(),
                       children: [
-                        new Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: new Row(
-                            children: <Widget>[
-                              new Expanded(
-                                  child: TextField(
-                                controller: _controller,
-                                decoration: InputDecoration(
-                                  suffixIcon: PopupMenuButton<String>(
-                                    icon: const Icon(Icons.arrow_drop_down),
-                                    onSelected: (String value) {
-                                      _controller.text = value;
-                                      hinttext = value;
-                                    },
-                                    itemBuilder: (BuildContext context) {
-                                      return items.map<PopupMenuItem<String>>(
-                                          (String value) {
-                                        return new PopupMenuItem(
-                                            child: new Text(value),
-                                            value: value);
-                                      }).toList();
-                                    },
-                                  ),
-                                  hintText: hinttext,
-                                ),
-                              )),
-                            ],
-                          ),
-                        ),
+                        TableRow(children: [
+                          Text("Nombre:",
+                              style: TextStyles.appPartnerTextStyle),
+                          Text("Daniel Esteban Valero",
+                              textScaleFactor: 1,
+                              style: TextStyles.appPartnerTextStyle),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(height: 15), //SizeBox Widget
+                          SizedBox(height: 15), //SizeBox Widget
+                        ]),
+                        TableRow(children: [
+                          Text("Email:",
+                              textScaleFactor: 1,
+                              style: TextStyles.appPartnerTextStyle),
+                          Text("dvalero@gmail.com",
+                              textScaleFactor: 1,
+                              style: TextStyles.appPartnerTextStyle),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(height: 15), //SizeBox Widget
+                          SizedBox(height: 15), //SizeBox Widget
+                        ]),
+                        TableRow(children: [
+                          Text("Telefono:",
+                              textScaleFactor: 1,
+                              style: TextStyles.appPartnerTextStyle),
+                          Text("3144429560",
+                              textScaleFactor: 1,
+                              style: TextStyles.appPartnerTextStyle),
+                        ]),
                       ],
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 15,
                   ),
-                  payButton,
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text("¿Quieres registrar una cuenta?"),
-                  addAcountButton.child,
-                  SizedBox(
-                    height: 50,
-                  )
+                  saveButton
                 ],
               ),
             )
@@ -189,13 +148,14 @@ class PayOut extends StatelessWidget {
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
                 onTap: () {
-                  // Update the state of the app
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Perfil(),
                     ),
                   );
+                  // Update the state of the app
+
                   // Then close the drawer
                   //Navigator.pop(context);
                 },
@@ -244,8 +204,14 @@ class PayOut extends StatelessWidget {
                 onTap: () {
                   // Update the state of the app
                   // ...
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PayOut(),
+                    ),
+                  );
                   // Then close the drawer
-                  Navigator.pop(context);
+                  //Navigator.pop(context);
                 },
               ),
               decoration: BoxDecoration(
@@ -270,4 +236,50 @@ class PayOut extends StatelessWidget {
       ),
     );
   }
+
+  String validatePassword(String value) {
+    //print("valor $value passsword ${passwordController.text}");
+    if (value.length == 0) return "La contraseña es necesaria";
+    if (value != passwordController.text) {
+      return "Las contraseñas no coinciden";
+    }
+    return null;
+  }
+}
+
+String validateName(String value) {
+  String pattern = r'(^[a-zA-Z ]*$)';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return "El nombre es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "El nombre debe de ser a-z y A-Z";
+  }
+  return null;
+}
+
+String validateEmail(String value) {
+  String pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return "El correo es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "Correo invalido";
+  } else {
+    return null;
+  }
+}
+
+String validateMobile(String value) {
+  String patttern = r'(^[0-9]*$)';
+  RegExp regExp = new RegExp(patttern);
+  if (value.length == 0) {
+    return "El telefono es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "El telefono solo debe contener numeros";
+  } else if (value.length != 10) {
+    return "El numero debe tener 10 digitos";
+  }
+  return null;
 }

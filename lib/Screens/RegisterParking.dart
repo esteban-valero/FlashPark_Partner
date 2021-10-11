@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
+import 'package:hello_world_flutter/Screens/Perfil.dart';
+import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
 import 'package:hello_world_flutter/Screens/EditPerfil.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
-import 'package:provider/provider.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class RegisterParking extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -119,8 +120,9 @@ class RegisterParking extends StatelessWidget {
         color: Colors.orange,
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          context.read<AuthenticationService>().registerParking(
+        onPressed: () async {
+          final auth = Provider.of(context).auth;
+          await auth.registerParking(
               nameController.text.trim(),
               adressController.text.trim(),
               carsController.text.trim(),
@@ -162,15 +164,13 @@ class RegisterParking extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: new CircleAvatar(
-          radius: 60.0,
-          backgroundColor: Colors.orange,
-          child: new Image.asset(
-            'assets/images/PeopleIcon.png',
-          ),
+        title: Text(
+          "Registrar Parqueadero",
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.orange,
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -242,7 +242,7 @@ class RegisterParking extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditPerfil(),
+                      builder: (context) => Perfil(),
                     ),
                   );
                   // Update the state of the app
@@ -314,8 +314,9 @@ class RegisterParking extends StatelessWidget {
                   'Cerrar sesión',
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
-                onTap: () {
-                  context.read<AuthenticationService>().signOut();
+                onTap: () async {
+                  final auth = Provider.of(context).auth;
+                  await auth.signOut();
                 },
               ),
               decoration: BoxDecoration(

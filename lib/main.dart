@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hello_world_flutter/Screens/CreateAcount.dart';
 import 'package:hello_world_flutter/Screens/HomePage.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
-import 'package:provider/provider.dart';
+import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,52 +17,37 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AuthenticationService>(
-            create: (_) => AuthenticationService(FirebaseAuth.instance)),
-        StreamProvider(
-          create: (context) =>
-              context.read<AuthenticationService>().authStateChanges,
-          initialData: null,
-        )
-      ],
+    return Provider(
+      auth: AuthService(),
       child: MaterialApp(
-        title: 'FlashPark',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
-          // This makes the visual density adapt to the platform that you run
-          // the app on. For desktop platforms, the controls will be smaller and
-          // closer together (more dense) than on mobile platforms.
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: AuthenticatorWrapper(),
-      ),
+          title: "Travel Budget App",
+          theme: ThemeData(
+            primarySwatch: Colors.orange,
+          ),
+          home: HomeController(),
+          routes: <String, WidgetBuilder>{
+            '/signUp': (BuildContext context) => CreateAccount(),
+            '/signIn': (BuildContext context) => Home(),
+            '/home': (BuildContext context) => HomeController(),
+          }),
     );
   }
 }
 
-class AuthenticatorWrapper extends StatelessWidget {
-  const AuthenticatorWrapper({
-    Key key,
-  }) : super(key: key);
-
+class HomeController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User>();
-    if (firebaseUser != null) {
-      return HomeFlashPark();
-    }
-    return Home();
+    final AuthService auth = Provider.of(context).auth;
+    return StreamBuilder<String>(
+      stream: auth.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final bool signedIn = snapshot.hasData;
+
+          return signedIn ? HomeFlashPark() : Home();
+        }
+        return CircularProgressIndicator();
+      },
+    );
   }
 }

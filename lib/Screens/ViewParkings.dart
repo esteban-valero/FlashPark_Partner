@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
+import 'package:hello_world_flutter/Screens/Perfil.dart';
 import 'package:hello_world_flutter/common/customDetailParking.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:provider/provider.dart';
-import 'package:hello_world_flutter/Screens/EditPerfil.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class ViewParking extends StatelessWidget {
   const ViewParking({Key key}) : super(key: key);
@@ -18,7 +17,7 @@ class ViewParking extends StatelessWidget {
           style: TextStyles.appPartnerTextStyle.copyWith(),
         ),
         backgroundColor: Colors.orange,
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -105,7 +104,7 @@ class ViewParking extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditPerfil(),
+                      builder: (context) => Perfil(),
                     ),
                   );
                   // Update the state of the app
@@ -177,8 +176,9 @@ class ViewParking extends StatelessWidget {
                   'Cerrar sesión',
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
-                onTap: () {
-                  context.read<AuthenticationService>().signOut();
+                onTap: () async {
+                  final auth = Provider.of(context).auth;
+                  await auth.signOut();
                 },
               ),
               decoration: BoxDecoration(

@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
+import 'package:hello_world_flutter/Screens/TermsOfUse.dart';
+import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:provider/provider.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 import 'HomePage.dart';
 
 class CreateAccount extends StatelessWidget {
@@ -17,6 +18,7 @@ class CreateAccount extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phonrController = TextEditingController();
   final GlobalKey<FormState> keyForm = new GlobalKey();
+  final bool agree = false;
 
   @override
   Widget build(BuildContext context) {
@@ -101,13 +103,14 @@ class CreateAccount extends StatelessWidget {
         color: Colors.orange,
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
           if (keyForm.currentState.validate()) {
-            context.read<AuthenticationService>().signUp(
-                email: emailController.text.trim(),
-                password: passwordController.text.trim(),
-                name: nameController.text.trim(),
-                phone: phonrController.text.trim());
+            final auth = Provider.of(context).auth;
+            await auth.signUp(
+                emailController.text.trim(),
+                passwordController.text.trim(),
+                nameController.text.trim(),
+                phonrController.text.trim());
             keyForm.currentState.reset();
           }
         },
@@ -145,7 +148,7 @@ class CreateAccount extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Container(
-              height: 650,
+              height: 700,
               width: 350,
               padding: EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.only(top: 250, left: 20),
@@ -169,7 +172,8 @@ class CreateAccount extends StatelessWidget {
                     phone,
                     SizedBox(height: 20.0),
                     registerButton,
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
+                    TermsOfUse(),
                     Text("¿Ya tienes una cuenta?"),
                     loginNow
                   ],

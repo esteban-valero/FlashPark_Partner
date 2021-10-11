@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/EditPerfil.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
+import 'package:hello_world_flutter/Screens/Perfil.dart';
 import 'package:hello_world_flutter/Screens/RegisterParking.dart';
 import 'package:hello_world_flutter/Screens/ViewParkings.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
+import 'package:hello_world_flutter/Services/DatabaseServices.dart';
+import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:provider/provider.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 import 'HomePage.dart';
 
 class HomeFlashPark extends StatelessWidget {
@@ -14,6 +18,11 @@ class HomeFlashPark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    Future Function() UserPorfil = DatabaseManager().getUserProfile;
+
     final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(40.0),
@@ -38,12 +47,12 @@ class HomeFlashPark extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Welcome " + "!" + "User" + "!",
+          "Welcome, " + "!" + "name" + "!",
           style: TextStyles.appPartnerTextStyle
               .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.orange,
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -57,7 +66,7 @@ class HomeFlashPark extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    "¡Empecemos! \n Inscribe tu parqueadero y empieza a crecer con nosotros",
+                    "¡Empecemos! \n Inscribe tu parqueadero y empieza a crecer con nosotros ",
                     style:
                         TextStyles.appPartnerTextStyle.copyWith(fontSize: 30),
                     textAlign: TextAlign.center,
@@ -103,7 +112,7 @@ class HomeFlashPark extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditPerfil(),
+                      builder: (context) => Perfil(),
                     ),
                   );
                   // Then close the drawer
@@ -182,8 +191,9 @@ class HomeFlashPark extends StatelessWidget {
                   'Cerrar sesión',
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
-                onTap: () {
-                  context.read<AuthenticationService>().signOut();
+                onTap: () async {
+                  final auth = Provider.of(context).auth;
+                  await auth.signOut();
                 },
               ),
               decoration: BoxDecoration(

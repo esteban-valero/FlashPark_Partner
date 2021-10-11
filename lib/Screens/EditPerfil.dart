@@ -1,68 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
+import 'package:hello_world_flutter/Screens/Perfil.dart';
+import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
-import 'package:provider/provider.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class EditPerfil extends StatelessWidget {
-  const EditPerfil({Key key}) : super(key: key);
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordConfirmController =
+      TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phonrController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final nameField = TextField(
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese su nombre",
-          labelText: "Nombre",
-          labelStyle: TextStyle(color: Colors.black),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
-    final apellidoField = TextField(
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese su apellido",
-          labelText: "Apellido",
-          labelStyle: TextStyle(color: Colors.black),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
-    final passField = TextField(
-      obscureText: true,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese su contraseña",
-          labelText: "Contraseña",
-          labelStyle: TextStyle(color: Colors.black),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
-    final emailField = TextField(
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Ingrese su email",
-          labelText: "Email",
-          labelStyle: TextStyle(color: Colors.black),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-    );
+    final name = TextFormField(
+        controller: nameController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Nombre",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateName);
+
+    final passwordField = TextFormField(
+        controller: passwordController,
+        obscureText: true,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Contraseña",
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: Colors.orange))));
+
+    final passwordFieldConf = TextFormField(
+        controller: passwordConfirmController,
+        obscureText: true,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Contraseña",
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: Colors.orange))),
+        validator: validatePassword);
+
+    final emailField = TextFormField(
+        controller: emailController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "E-mail",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateEmail);
+
+    final phone = TextFormField(
+        controller: phonrController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Télefono",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateMobile);
+
     final saveButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(40.0),
@@ -84,37 +100,72 @@ class EditPerfil extends StatelessWidget {
       ),
     );
 
+    final loadImageButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(40.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        color: Colors.orange,
+        minWidth: MediaQuery.of(context).size.width / 3,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeFlashPark()),
+          );
+        },
+        child: Text("Cargar Imagen",
+            textAlign: TextAlign.center,
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: new CircleAvatar(
-          radius: 60.0,
-          backgroundColor: Colors.orange,
-          child: new Image.asset(
-            'assets/images/PeopleIcon.png',
-          ),
+        title: Text(
+          "Perfil",
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.orange,
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            CustomImageFPHome(),
-            Text("Partner",
-                style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 50)),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/Background.jpg'),
+                    fit: BoxFit.fill),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            loadImageButton,
+            SizedBox(height: 20),
             Container(
               width: 350,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  nameField,
-                  SizedBox(height: 20),
-                  apellidoField,
+                  name,
                   SizedBox(height: 20),
                   emailField,
                   SizedBox(height: 20),
-                  passField,
+                  phone,
+                  SizedBox(height: 20),
+                  passwordField,
+                  SizedBox(height: 20.0),
+                  passwordFieldConf,
                   SizedBox(height: 20),
                   saveButton,
                 ],
@@ -153,7 +204,7 @@ class EditPerfil extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditPerfil(),
+                      builder: (context) => Perfil(),
                     ),
                   );
                   // Update the state of the app
@@ -225,8 +276,9 @@ class EditPerfil extends StatelessWidget {
                   'Cerrar sesión',
                   style: TextStyles.appPartnerTextStyle.copyWith(),
                 ),
-                onTap: () {
-                  context.read<AuthenticationService>().signOut();
+                onTap: () async {
+                  final auth = Provider.of(context).auth;
+                  await auth.signOut();
                 },
               ),
               decoration: BoxDecoration(
@@ -237,4 +289,50 @@ class EditPerfil extends StatelessWidget {
       ),
     );
   }
+
+  String validatePassword(String value) {
+    //print("valor $value passsword ${passwordController.text}");
+    if (value.length == 0) return "La contraseña es necesaria";
+    if (value != passwordController.text) {
+      return "Las contraseñas no coinciden";
+    }
+    return null;
+  }
+}
+
+String validateName(String value) {
+  String pattern = r'(^[a-zA-Z ]*$)';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return "El nombre es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "El nombre debe de ser a-z y A-Z";
+  }
+  return null;
+}
+
+String validateEmail(String value) {
+  String pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = new RegExp(pattern);
+  if (value.length == 0) {
+    return "El correo es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "Correo invalido";
+  } else {
+    return null;
+  }
+}
+
+String validateMobile(String value) {
+  String patttern = r'(^[0-9]*$)';
+  RegExp regExp = new RegExp(patttern);
+  if (value.length == 0) {
+    return "El telefono es necesario";
+  } else if (!regExp.hasMatch(value)) {
+    return "El telefono solo debe contener numeros";
+  } else if (value.length != 10) {
+    return "El numero debe tener 10 digitos";
+  }
+  return null;
 }

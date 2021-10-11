@@ -4,8 +4,7 @@ import 'package:hello_world_flutter/Screens/CreateAcount.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/RestorePasword.dart';
-import 'package:provider/provider.dart';
-import 'package:hello_world_flutter/Services/FirebaseServices.dart';
+import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class Home extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -49,14 +48,13 @@ class Home extends StatelessWidget {
         color: Colors.orange,
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
           if (keyForm.currentState.validate()) {
-            final provider =
-                Provider.of<AuthenticationService>(context, listen: false);
-            provider.signIn(
-                email: emailController.text.trim(),
-                password: passwordController.text.trim());
-            keyForm.currentState.reset();
+            final auth = Provider.of(context).auth;
+            String response = await auth.signIn(
+                emailController.text.trim(), passwordController.text.trim());
+            print(response);
+            Navigator.of(context).pushReplacementNamed('/home');
           }
         },
         child: Text("Login",

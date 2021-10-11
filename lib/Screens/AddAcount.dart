@@ -16,7 +16,7 @@ class AddAccount extends StatelessWidget {
               .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.orange,
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         centerTitle: true,
       ),
       body: Center(

@@ -13,7 +13,7 @@ class ViewReservatios extends StatelessWidget {
           style: TextStyles.appPartnerTextStyle.copyWith(),
         ),
         backgroundColor: Colors.orange,
-        toolbarHeight: 100,
+        toolbarHeight: 70,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
