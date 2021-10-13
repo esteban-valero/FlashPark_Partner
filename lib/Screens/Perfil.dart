@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Model/Parking.dart';
 import 'package:hello_world_flutter/Model/User.dart';
-import 'package:hello_world_flutter/Screens/EditPerfil.dart';
-import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
+import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -26,188 +23,54 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    final saveButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(40.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        color: Colors.orange,
-        minWidth: MediaQuery.of(context).size.width / 2,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditPerfil()),
-          );
-        },
-        child: Text("Editar",
-            textAlign: TextAlign.center,
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Perfil",
-          style: TextStyles.appPartnerTextStyle
-              .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: Text(
+            "Perfil",
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+          toolbarHeight: 70,
+          centerTitle: true,
         ),
-        backgroundColor: Colors.orange,
-        toolbarHeight: 70,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-            ),
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/Background.jpg'),
-                    fit: BoxFit.fill),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 50,
               ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  FutureBuilder(
-                    future: Provider.of(context).auth.getCurrentUser(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return displayUserInformation(context, snapshot);
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
-                  )
-                ],
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/PeopleIcon.png'),
+                  ),
+                ),
               ),
-            )
-          ],
+              SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    FutureBuilder(
+                      future: Provider.of(context).auth.getCurrentUser(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return displayUserInformation(context, snapshot);
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.orange,
-              ),
-              child: new CircleAvatar(
-                radius: 60.0,
-                backgroundColor: Colors.orange,
-                child: new Image.asset(
-                  'assets/images/PeopleIcon.png',
-                ),
-              ),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Perfil',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileView(),
-                    ),
-                  );
-                  // Update the state of the app
-
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Parqueaderos',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Ayuda',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Desembolsar',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PayOut(),
-                    ),
-                  );
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Cerrar sesión',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () async {
-                  final auth = Provider.of(context).auth;
-                  await auth.signOut();
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-          ],
-        ),
-      ),
-    );
+        drawer: Menu().getDrawer(context));
   }
 
   Widget displayUserInformation(context, snapshot) {
@@ -231,71 +94,78 @@ class _ProfileViewState extends State<ProfileView> {
                 namController.text = user.name;
                 emailController.text = user.email;
                 _isAdmin = user.admin ?? false;
-              } else {
-                CircularProgressIndicator();
-              }
-              return Container(
-                width: 350,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Table(
-                        // textDirection: TextDirection.rtl,
-                        //defaultVerticalAlignment: TableCellVerticalAlignment.top,
-                        defaultColumnWidth: IntrinsicColumnWidth(),
-                        children: [
-                          TableRow(children: [
-                            Text("Nombre:",
-                                style: TextStyles.appPartnerTextStyle),
-                            Text(user.name,
-                                textScaleFactor: 1,
-                                style: TextStyles.appPartnerTextStyle),
-                          ]),
-                          TableRow(children: [
-                            SizedBox(height: 15), //SizeBox Widget
-                            SizedBox(height: 15), //SizeBox Widget
-                          ]),
-                          TableRow(children: [
-                            Text("Email:",
-                                textScaleFactor: 1,
-                                style: TextStyles.appPartnerTextStyle),
-                            Text(user.email,
-                                textScaleFactor: 1,
-                                style: TextStyles.appPartnerTextStyle),
-                          ]),
-                          TableRow(children: [
-                            SizedBox(height: 15), //SizeBox Widget
-                            SizedBox(height: 15), //SizeBox Widget
-                          ]),
-                          TableRow(children: [
-                            Text("Telefono:",
-                                textScaleFactor: 1,
-                                style: TextStyles.appPartnerTextStyle),
-                            Text(user.Phone,
-                                textScaleFactor: 1,
-                                style: TextStyles.appPartnerTextStyle),
-                          ]),
-                        ],
+                return Container(
+                  width: 350,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Table(
+                          // textDirection: TextDirection.rtl,
+                          //defaultVerticalAlignment: TableCellVerticalAlignment.top,
+                          defaultColumnWidth: IntrinsicColumnWidth(),
+                          children: [
+                            TableRow(children: [
+                              Text("Nombre:",
+                                  style: TextStyles.appPartnerTextStyle),
+                              Text(user.name,
+                                  textScaleFactor: 1,
+                                  style: TextStyles.appPartnerTextStyle),
+                            ]),
+                            TableRow(children: [
+                              SizedBox(height: 15), //SizeBox Widget
+                              SizedBox(height: 15), //SizeBox Widget
+                            ]),
+                            TableRow(children: [
+                              Text("Email:",
+                                  textScaleFactor: 1,
+                                  style: TextStyles.appPartnerTextStyle),
+                              Text(user.email,
+                                  textScaleFactor: 1,
+                                  style: TextStyles.appPartnerTextStyle),
+                            ]),
+                            TableRow(children: [
+                              SizedBox(height: 15), //SizeBox Widget
+                              SizedBox(height: 15), //SizeBox Widget
+                            ]),
+                            TableRow(children: [
+                              Text("Telefono:",
+                                  textScaleFactor: 1,
+                                  style: TextStyles.appPartnerTextStyle),
+                              Text(user.Phone,
+                                  textScaleFactor: 1,
+                                  style: TextStyles.appPartnerTextStyle),
+                            ]),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    adminFeature(),
-                  ],
-                ),
-              );
+                      SizedBox(
+                        height: 15,
+                      ),
+                      adminFeature(),
+                    ],
+                  ),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
             }),
-        ElevatedButton(
-            onPressed: () {
-              _userEditBottomSheet(context);
-            },
-            child: Text("Editar",
-                textAlign: TextAlign.center,
-                style: TextStyles.appPartnerTextStyle.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold)))
+        SizedBox(
+          height: 10,
+        ),
+        MaterialButton(
+          color: Colors.orange,
+          minWidth: MediaQuery.of(context).size.width / 2,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () {
+            _userEditBottomSheet(context);
+          },
+          child: Text("Editar",
+              textAlign: TextAlign.center,
+              style: TextStyles.appPartnerTextStyle
+                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+        ),
       ],
     );
   }
@@ -304,15 +174,20 @@ class _ProfileViewState extends State<ProfileView> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
-        return Container(
-          height: MediaQuery.of(context).size.height * .60,
+        return SingleChildScrollView(
+            child: Container(
+          height: MediaQuery.of(context).size.height,
           child: Padding(
-            padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+            padding: const EdgeInsets.only(left: 15.0),
             child: Column(
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text("Actualizar Perfil"),
+                    Text(
+                      "Actualizar Perfil",
+                      style: TextStyles.appPartnerTextStyle.copyWith(
+                          color: Colors.orange, fontWeight: FontWeight.bold),
+                    ),
                     Spacer(),
                     IconButton(
                       icon: Icon(Icons.cancel),
@@ -328,81 +203,117 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: TextField(
-                          controller: namController,
-                          decoration: InputDecoration(
-                            helperText: "Nombre",
-                          ),
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(right: 15.0),
+                          child: TextFormField(
+                              controller: namController,
+                              obscureText: false,
+                              style: TextStyles.appPartnerTextStyle,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.fromLTRB(
+                                      10.0, 10.0, 10.0, 10.0),
+                                  helperText: "Nombre",
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    borderSide:
+                                        BorderSide(color: Colors.orange),
+                                  )),
+                              validator: validateName)),
                     )
                   ],
                 ),
                 Row(
                   children: [
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: TextField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            helperText: "Email",
-                          ),
-                        ),
-                      ),
-                    )
+                        child: Padding(
+                            padding: const EdgeInsets.only(right: 15.0),
+                            child: TextFormField(
+                                controller: phoneController,
+                                obscureText: false,
+                                style: TextStyles.appPartnerTextStyle,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 10.0, 10.0),
+                                    helperText: "Teléfono",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                      borderSide:
+                                          BorderSide(color: Colors.orange),
+                                    )),
+                                validator: validateMobile))),
                   ],
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: TextField(
-                          controller: phoneController,
-                          decoration: InputDecoration(
-                            helperText: "Telefono",
-                          ),
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(right: 15.0),
+                          child: TextFormField(
+                              controller: emailController,
+                              obscureText: false,
+                              style: TextStyles.appPartnerTextStyle,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.fromLTRB(
+                                      10.0, 10.0, 10.0, 10.0),
+                                  helperText: "Email",
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    borderSide:
+                                        BorderSide(color: Colors.orange),
+                                  )),
+                              validator: validateEmail)),
                     )
                   ],
                 ),
                 Row(
                   children: [
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: TextField(
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            helperText: "Contraseña",
-                          ),
-                        ),
-                      ),
-                    )
+                        child: Padding(
+                            padding: const EdgeInsets.only(right: 15.0),
+                            child: TextFormField(
+                                controller: passwordController,
+                                obscureText: false,
+                                style: TextStyles.appPartnerTextStyle,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 10.0, 10.0),
+                                    helperText: "Contraseña",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                      borderSide:
+                                          BorderSide(color: Colors.orange),
+                                    )),
+                                validator: validatePassword)))
                   ],
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: TextField(
-                          controller: passwordConfirmController,
-                          decoration: InputDecoration(
-                            helperText: "Confirmar Contraseña",
-                          ),
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(right: 15.0),
+                          child: TextFormField(
+                              controller: passwordConfirmController,
+                              obscureText: false,
+                              style: TextStyles.appPartnerTextStyle,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.fromLTRB(
+                                      10.0, 10.0, 10.0, 10.0),
+                                  helperText: "Confirma Contraseña",
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    borderSide:
+                                        BorderSide(color: Colors.orange),
+                                  )),
+                              validator: validatePassword)),
                     )
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    ElevatedButton(
+                    MaterialButton(
+                      color: Colors.orange,
+                      minWidth: MediaQuery.of(context).size.width / 2,
+                      padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                       onPressed: () async {
                         user.Phone = phoneController.text;
                         user.name = namController.text;
@@ -419,7 +330,7 @@ class _ProfileViewState extends State<ProfileView> {
                             .collection('Partners')
                             .doc(uid)
                             .update(user.toJson())
-                            .then((value) => print('Updated'))
+                            .whenComplete(() => print('Updated'))
                             .catchError(
                                 (error) => print('Failed to update $error'));
                         Navigator.of(context).pop();
@@ -429,13 +340,13 @@ class _ProfileViewState extends State<ProfileView> {
                           style: TextStyles.appPartnerTextStyle.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
-                    )
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-        );
+        ));
       },
     );
   }

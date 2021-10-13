@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       auth: AuthService(),
       db: FirebaseFirestore.instance,
       child: MaterialApp(
-          title: "Travel Budget App",
+          title: "Flash Park Partner",
           theme: ThemeData(
             primarySwatch: Colors.orange,
           ),

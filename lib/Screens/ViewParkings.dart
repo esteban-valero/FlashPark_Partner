@@ -1,192 +1,115 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/Perfil.dart';
-import 'package:hello_world_flutter/common/customDetailParking.dart';
+import 'package:hello_world_flutter/Model/Parking.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:hello_world_flutter/Screens/PayOut.dart';
+import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
+import 'package:intl/intl.dart';
 
-class ViewParking extends StatelessWidget {
-  const ViewParking({Key key}) : super(key: key);
+class ViewParking extends StatefulWidget {
+  @override
+  _ViewParkingState createState() => _ViewParkingState();
+}
 
+class _ViewParkingState extends State<ViewParking> {
+  List<Parking> parkings = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Mis Parqueaderos",
-          style: TextStyles.appPartnerTextStyle.copyWith(),
+        appBar: AppBar(
+          title: Text(
+            "Parqueaderos",
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+          toolbarHeight: 70,
+          centerTitle: true,
         ),
-        backgroundColor: Colors.orange,
-        toolbarHeight: 70,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: 350,
-              child: ListTile(
-                title: Text(
-                  'Parking 1',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                  textAlign: TextAlign.center,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    FutureBuilder(
+                      future: Provider.of(context).auth.getCurrentUser(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return displayUserInformation(context, snapshot);
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    )
+                  ],
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CustomDetailParking(),
-                    ),
-                  );
-                  // Update the state of the app
-
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              width: 350,
-              child: ListTile(
-                title: Text(
-                  'Parking 2',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                  textAlign: TextAlign.center,
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CustomDetailParking(),
-                    ),
-                  );
-                  // Update the state of the app
-
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.orange,
-              ),
-              child: new CircleAvatar(
-                radius: 60.0,
-                backgroundColor: Colors.orange,
-                child: new Image.asset(
-                  'assets/images/PeopleIcon.png',
-                ),
-              ),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Perfil',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileView(),
-                    ),
-                  );
-                  // Update the state of the app
+        drawer: Menu().getDrawer(context));
+  }
 
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Parqueaderos',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Ayuda',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Desembolsar',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PayOut(),
-                    ),
-                  );
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Cerrar sesión',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () async {
-                  final auth = Provider.of(context).auth;
-                  await auth.signOut();
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-          ],
+  Widget displayUserInformation(BuildContext context, AsyncSnapshot snapshot) {
+    final authData = snapshot.data;
+    return Column(
+      children: <Widget>[
+        FutureBuilder(
+            future: _getParkingData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Container(
+                  height: 100,
+                  child: ListView.builder(
+                    itemCount: parkings.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          parkings[index].name,
+                          style: TextStyles.appPartnerTextStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () {
+                          //Go to the next screen with Navigator.push
+                        },
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+            }),
+        SizedBox(
+          height: 10,
         ),
-      ),
+      ],
     );
+  }
+
+  _getParkingData() async {
+    final uid = await Provider.of(context).auth.getCurrentUID();
+    //print(Provider.of(context).db.collection('Partners').doc(uid).get());
+    await Provider.of(context)
+        .db
+        .collection("Partners")
+        .doc(uid)
+        .collection("Parkings")
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        Parking p = Parking(
+          result.data()['Bike Capacity'],
+          result.data()['Cart Capacity'],
+          result.data()['Motorcycle Capacity'],
+          result.data()['Scooters Capacity'],
+          result.data()['Name'],
+          result.data()['address'],
+        );
+        parkings.add(p);
+      });
+    });
   }
 }

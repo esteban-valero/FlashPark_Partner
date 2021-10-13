@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/Screens/Perfil.dart';
 import 'package:hello_world_flutter/Screens/RegisterParking.dart';
 import 'package:hello_world_flutter/Screens/ViewParkings.dart';
-import 'package:hello_world_flutter/Services/DatabaseServices.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
+import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class HomeFlashPark extends StatelessWidget {
@@ -37,163 +35,42 @@ class HomeFlashPark extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Welcome, " + "!" + "name" + "!",
-          style: TextStyles.appPartnerTextStyle
-              .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: Text(
+            "Welcome, " + "!" + "name" + "!",
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+          toolbarHeight: 70,
+          centerTitle: true,
         ),
-        backgroundColor: Colors.orange,
-        toolbarHeight: 70,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomImageFPHome(),
-            Text("Partner",
-                style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 50)),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    "¡Empecemos! \n Inscribe tu parqueadero y empieza a crecer con nosotros ",
-                    style:
-                        TextStyles.appPartnerTextStyle.copyWith(fontSize: 30),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  registerButton
-                ],
-              ),
-            )
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomImageFPHome(),
+              Text("Partner",
+                  style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 50)),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "¡Empecemos! \n Inscribe tu parqueadero y empieza a crecer con nosotros ",
+                      style:
+                          TextStyles.appPartnerTextStyle.copyWith(fontSize: 30),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    registerButton
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.orange,
-              ),
-              child: new CircleAvatar(
-                radius: 60.0,
-                backgroundColor: Colors.orange,
-                child: new Image.asset(
-                  'assets/images/PeopleIcon.png',
-                ),
-              ),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Perfil',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileView(),
-                    ),
-                  );
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Mis Parqueaderos',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewParking(),
-                    ),
-                  );
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Ayuda',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Desembolsar',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PayOut(),
-                    ),
-                  );
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                //Navigator.pop(context);
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Cerrar sesión',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () async {
-                  final auth = Provider.of(context).auth;
-                  await auth.signOut();
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-          ],
-        ),
-      ),
-    );
+        drawer: Menu().getDrawer(context));
   }
 }

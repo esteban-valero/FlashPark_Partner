@@ -34,7 +34,8 @@ class AuthService {
         "name": name,
         "Email": email,
         "Pasword": password,
-        "Phone": phone
+        "Phone": phone,
+        "UserID": FirebaseAuth.instance.currentUser.uid
       }).then((_) {
         print("Success!");
       });

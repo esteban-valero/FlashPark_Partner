@@ -3,6 +3,7 @@ import 'package:hello_world_flutter/Screens/Perfil.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
 import 'package:hello_world_flutter/Screens/PayOut.dart';
+import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class RegisterParking extends StatelessWidget {
@@ -161,168 +162,55 @@ class RegisterParking extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Registrar Parqueadero",
-          style: TextStyles.appPartnerTextStyle
-              .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: Text(
+            "Registrar Parqueadero",
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+          toolbarHeight: 70,
+          centerTitle: true,
         ),
-        backgroundColor: Colors.orange,
-        toolbarHeight: 70,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/Background.jpg'),
-                    fit: BoxFit.fill),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/Background.jpg'),
+                      fit: BoxFit.fill),
+                ),
               ),
-            ),
-            loadImageButton,
-            Container(
-              width: 350,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  SizedBox(height: 20),
-                  nameField,
-                  SizedBox(height: 20),
-                  direccionField,
-                  SizedBox(height: 20),
-                  carsCapacityField,
-                  SizedBox(height: 20),
-                  motosCapacityField,
-                  SizedBox(height: 20),
-                  scooterCapacityField,
-                  SizedBox(height: 20),
-                  biciCapacityField,
-                  SizedBox(height: 20),
-                  registerButton,
-                  SizedBox(height: 20),
-                ],
-              ),
-            )
-          ],
+              loadImageButton,
+              Container(
+                width: 350,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    nameField,
+                    SizedBox(height: 20),
+                    direccionField,
+                    SizedBox(height: 20),
+                    carsCapacityField,
+                    SizedBox(height: 20),
+                    motosCapacityField,
+                    SizedBox(height: 20),
+                    scooterCapacityField,
+                    SizedBox(height: 20),
+                    biciCapacityField,
+                    SizedBox(height: 20),
+                    registerButton,
+                    SizedBox(height: 20),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.orange,
-              ),
-              child: new CircleAvatar(
-                radius: 60.0,
-                backgroundColor: Colors.orange,
-                child: new Image.asset(
-                  'assets/images/PeopleIcon.png',
-                ),
-              ),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Perfil',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileView(),
-                    ),
-                  );
-                  // Update the state of the app
-
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Parqueaderos',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Ayuda',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Desembolsar',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PayOut(),
-                    ),
-                  );
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  //Navigator.pop(context);
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              child: ListTile(
-                title: Text(
-                  'Cerrar sesión',
-                  style: TextStyles.appPartnerTextStyle.copyWith(),
-                ),
-                onTap: () async {
-                  final auth = Provider.of(context).auth;
-                  await auth.signOut();
-                },
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-          ],
-        ),
-      ),
-    );
+        drawer: Menu().getDrawer(context));
   }
 }

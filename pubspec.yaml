@@ -39,12 +39,12 @@ dependencies:
   flutter_svg: ^0.19.3
   animations: ^2.0.1
   flutter_markdown: ^0.5.2
+  video_player: ^2.2.5
 
 dev_dependencies:
   flutter_launcher_icons: "^0.8.0"
   flutter_test:
     sdk: flutter
-  mockito: ^4.1.1
   rxdart:
 
 flutter_icons:
@@ -59,6 +59,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/videos/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
