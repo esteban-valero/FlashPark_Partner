@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:hello_world_flutter/Model/Parking.dart';
 import 'package:hello_world_flutter/Screens/ViewReservatios.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 
 class CustomDetailParking extends StatelessWidget {
-  const CustomDetailParking({Key key}) : super(key: key);
+  Parking parking;
+  CustomDetailParking({
+    Key key,
+    @required this.parking,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +38,11 @@ class CustomDetailParking extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Parking 1",
+            "Parqueaderos",
             style: TextStyles.appPartnerTextStyle.copyWith(),
           ),
           backgroundColor: Colors.orange,
-          toolbarHeight: 100,
+          toolbarHeight: 70,
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -45,18 +50,13 @@ class CustomDetailParking extends StatelessWidget {
             children: <Widget>[
               Container(
                 alignment: Alignment.center,
-                width: 350,
                 child: Column(
                   children: [
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      "Nombre",
-                      style: TextStyles.appPartnerTextStyle.copyWith(),
-                    ),
-                    Text(
-                      "Parking 1",
+                      parking.name,
                       style:
                           TextStyles.appPartnerTextStyle.copyWith(fontSize: 25),
                     ),
@@ -64,11 +64,11 @@ class CustomDetailParking extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      "Direccion",
+                      "Dirección",
                       style: TextStyles.appPartnerTextStyle,
                     ),
                     Text(
-                      "Carrera x Calle X",
+                      parking.addrs,
                       style:
                           TextStyles.appPartnerTextStyle.copyWith(fontSize: 25),
                     ),
@@ -77,116 +77,84 @@ class CustomDetailParking extends StatelessWidget {
                     ),
                   ],
                 ),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.orange))),
               ),
               Container(
-                alignment: Alignment.center,
-                width: 350,
-                child: Column(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(
-                      height: 10,
-                    ),
                     Text(
                       "Capacidad Carros",
                       style: TextStyles.appPartnerTextStyle.copyWith(),
                     ),
                     Text(
-                      "10/20",
-                      style:
-                          TextStyles.appPartnerTextStyle.copyWith(fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.orange))),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: 350,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
                       "Capacidad Motos",
                       style: TextStyles.appPartnerTextStyle.copyWith(),
                     ),
-                    Text(
-                      "10/20",
-                      style:
-                          TextStyles.appPartnerTextStyle.copyWith(fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
                   ],
                 ),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.orange))),
               ),
               Container(
-                alignment: Alignment.center,
-                width: 350,
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(
-                      height: 10,
-                    ),
+                    createCircularPercentIndicator(parking.carCap, 5),
+                    createCircularPercentIndicator(parking.mtCap, 1),
+                  ],
+                ),
+              ),
+              Container(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
                     Text(
                       "Capacidad Bicicletas",
                       style: TextStyles.appPartnerTextStyle.copyWith(),
                     ),
                     Text(
-                      "10/20",
-                      style:
-                          TextStyles.appPartnerTextStyle.copyWith(fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.orange))),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: 350,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
                       "Capacidad Scooters",
                       style: TextStyles.appPartnerTextStyle.copyWith(),
                     ),
-                    Text(
-                      "10/20",
-                      style:
-                          TextStyles.appPartnerTextStyle.copyWith(fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
                   ],
                 ),
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.orange))),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    createCircularPercentIndicator(parking.bkCap, 5),
+                    createCircularPercentIndicator(parking.scCap, 0),
+                  ],
+                ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               viewReservationButton
             ],
           ),
         ),
         drawer: Menu().getDrawer(context));
+  }
+
+  dynamic createCircularPercentIndicator(int capacity, int ocupancy) {
+    if (capacity != 0) {
+      return CircularPercentIndicator(
+        radius: 100.0,
+        lineWidth: 10.0,
+        percent: ocupancy / capacity,
+        center: new Text((ocupancy / capacity * 100).toStringAsFixed(1) + '%'),
+        progressColor: Colors.green,
+      );
+    } else {
+      return CircularPercentIndicator(
+        radius: 100.0,
+        lineWidth: 10.0,
+        percent: 0,
+        center: new Text("NA"),
+        progressColor: Colors.green,
+      );
+    }
   }
 }

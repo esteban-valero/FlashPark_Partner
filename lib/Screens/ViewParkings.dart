@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Model/Parking.dart';
+import 'package:hello_world_flutter/common/customDetailParking.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
@@ -18,70 +19,67 @@ class _ViewParkingState extends State<ViewParking> {
         appBar: AppBar(
           title: Text(
             "Parqueaderos",
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+            style: TextStyles.appPartnerTextStyle.copyWith(
+                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           backgroundColor: Colors.orange,
           toolbarHeight: 70,
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 20),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    FutureBuilder(
-                      future: Provider.of(context).auth.getCurrentUser(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return displayUserInformation(context, snapshot);
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+            child: Column(
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            FutureBuilder(
+                future: _getParkingData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: ListView.builder(
+                          itemCount: parkings.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: ListTile(
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                                title: Text(
+                                  parkings[index].name,
+                                  style:
+                                      TextStyles.appPartnerTextStyle.copyWith(),
+                                  textAlign: TextAlign.center,
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CustomDetailParking(
+                                        parking: parkings[index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom:
+                                          BorderSide(color: Colors.orange))),
+                            );
+                          },
+                        ));
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }),
+          ],
+        )),
         drawer: Menu().getDrawer(context));
   }
 
   Widget displayUserInformation(BuildContext context, AsyncSnapshot snapshot) {
-    final authData = snapshot.data;
     return Column(
       children: <Widget>[
-        FutureBuilder(
-            future: _getParkingData(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  height: 100,
-                  child: ListView.builder(
-                    itemCount: parkings.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                          parkings[index].name,
-                          style: TextStyles.appPartnerTextStyle,
-                          textAlign: TextAlign.center,
-                        ),
-                        onTap: () {
-                          //Go to the next screen with Navigator.push
-                        },
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            }),
         SizedBox(
           height: 10,
         ),
@@ -90,6 +88,7 @@ class _ViewParkingState extends State<ViewParking> {
   }
 
   _getParkingData() async {
+    parkings = [];
     final uid = await Provider.of(context).auth.getCurrentUID();
     //print(Provider.of(context).db.collection('Partners').doc(uid).get());
     await Provider.of(context)

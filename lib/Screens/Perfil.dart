@@ -27,8 +27,8 @@ class _ProfileViewState extends State<ProfileView> {
         appBar: AppBar(
           title: Text(
             "Perfil",
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+            style: TextStyles.appPartnerTextStyle.copyWith(
+                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
           ),
           backgroundColor: Colors.orange,
           toolbarHeight: 70,
