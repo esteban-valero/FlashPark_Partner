@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hello_world_flutter/Screens/Ayuda.dart';
-import 'package:hello_world_flutter/Screens/PayOut.dart';
-import 'package:hello_world_flutter/Screens/Perfil.dart';
-import 'package:hello_world_flutter/Screens/ViewParkings.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Parqueaderos/ViewParkings.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20ayudas/Help.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Perfil/Perfil.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Parqueaderos/RegisterParking.dart';
+import 'package:hello_world_flutter/Negocio/HomePage.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
@@ -75,24 +76,17 @@ class Menu {
           Container(
             child: ListTile(
               title: Text(
-                'Desembolsar',
+                'Registrar Parqueadero',
                 style: TextStyles.appPartnerTextStyle.copyWith(),
               ),
               onTap: () {
-                // Update the state of the app
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PayOut(),
+                    builder: (context) => RegisterParking(),
                   ),
                 );
-                // Then close the drawer
-                //Navigator.pop(context);
               },
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              //Navigator.pop(context);
             ),
             decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: Colors.orange))),
@@ -107,7 +101,7 @@ class Menu {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => VideoApp(),
+                    builder: (context) => Help(),
                   ),
                 );
               },
@@ -124,6 +118,12 @@ class Menu {
               onTap: () async {
                 final auth = Provider.of(context).auth;
                 await auth.signOut();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(),
+                  ),
+                );
               },
             ),
             decoration: BoxDecoration(

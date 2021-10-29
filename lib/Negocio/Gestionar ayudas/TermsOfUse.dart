@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/PolicyDialog.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20ayudas/PolicyDialog.dart';
 
 class TermsOfUse extends StatelessWidget {
   const TermsOfUse({

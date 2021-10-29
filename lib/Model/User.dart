@@ -9,6 +9,7 @@ class User {
   String pasword;
 
   String email;
+  String image;
 
   User(this.Phone);
 
@@ -17,6 +18,7 @@ class User {
         'admin': admin,
         'Email': email,
         'name': name,
+        'image': image
         //'Pasword': pasword,
       };
 }

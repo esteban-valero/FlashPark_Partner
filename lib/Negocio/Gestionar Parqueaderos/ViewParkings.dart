@@ -12,7 +12,7 @@ class ViewParking extends StatefulWidget {
 }
 
 class _ViewParkingState extends State<ViewParking> {
-  List<Parking> parkings = [];
+  List<Parking> parkings;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +91,7 @@ class _ViewParkingState extends State<ViewParking> {
     parkings = [];
     final uid = await Provider.of(context).auth.getCurrentUID();
     //print(Provider.of(context).db.collection('Partners').doc(uid).get());
+
     await Provider.of(context)
         .db
         .collection("Partners")
@@ -100,13 +101,13 @@ class _ViewParkingState extends State<ViewParking> {
         .then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         Parking p = Parking(
-          result.data()['Bike Capacity'],
-          result.data()['Cart Capacity'],
-          result.data()['Motorcycle Capacity'],
-          result.data()['Scooters Capacity'],
-          result.data()['Name'],
-          result.data()['address'],
-        );
+            result.data()['Bike Capacity'],
+            result.data()['Car Capacity'],
+            result.data()['Motorcycle Capacity'],
+            result.data()['Scooters Capacity'],
+            result.data()['Name'],
+            result.data()['address'],
+            result.data()['IDParking']);
         parkings.add(p);
       });
     });

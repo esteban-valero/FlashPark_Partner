@@ -3,11 +3,12 @@ class Parking {
   int carCap;
   int mtCap;
   int scCap;
-  String name;
-  String addrs;
+  var name;
+  var addrs;
+  var idParking;
 
-  Parking(
-      this.bkCap, this.carCap, this.mtCap, this.scCap, this.name, this.addrs);
+  Parking(this.bkCap, this.carCap, this.mtCap, this.scCap, this.name,
+      this.addrs, this.idParking);
 
   Map<String, dynamic> toJson() => {
         'Bike Capacity': bkCap,
@@ -16,5 +17,6 @@ class Parking {
         'Scooters Capacity': scCap,
         'Name': name,
         'address': addrs,
+        'IDParking': idParking
       };
 }

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/TermsOfUse.dart';
+import 'package:hello_world_flutter/Negocio/HomeFlasPark.dart';
+import 'package:hello_world_flutter/Negocio/HomePage.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20ayudas/TermsOfUse.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
-import 'HomePage.dart';
 
 class CreateAccount extends StatelessWidget {
   final firestoreInstance = FirebaseFirestore.instance;
@@ -103,11 +104,16 @@ class CreateAccount extends StatelessWidget {
         onPressed: () async {
           if (keyForm.currentState.validate()) {
             final auth = Provider.of(context).auth;
-            await auth.signUp(
-                emailController.text.trim(),
-                passwordController.text.trim(),
-                nameController.text.trim(),
-                phonrController.text.trim());
+            if (await auth.signUp(
+                    emailController.text.trim(),
+                    passwordController.text.trim(),
+                    nameController.text.trim(),
+                    phonrController.text.trim()) ==
+                "Signed UP") {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomeFlashPark()));
+            }
+
             keyForm.currentState.reset();
           }
         },

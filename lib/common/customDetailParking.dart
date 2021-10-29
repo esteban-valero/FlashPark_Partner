@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Parqueaderos/ViewReservatios.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:hello_world_flutter/Model/Parking.dart';
-import 'package:hello_world_flutter/Screens/ViewReservatios.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 
 class CustomDetailParking extends StatelessWidget {
-  Parking parking;
+  final Parking parking;
   CustomDetailParking({
     Key key,
     @required this.parking,
@@ -25,7 +25,8 @@ class CustomDetailParking extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ViewReservatios()),
+            MaterialPageRoute(
+                builder: (context) => ViewReservatios(parking: parking)),
           );
         },
         child: Text("Ver Reservas",
@@ -98,7 +99,7 @@ class CustomDetailParking extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    createCircularPercentIndicator(parking.carCap, 5),
+                    createCircularPercentIndicator(parking.carCap, 3),
                     createCircularPercentIndicator(parking.mtCap, 1),
                   ],
                 ),
@@ -139,13 +140,34 @@ class CustomDetailParking extends StatelessWidget {
   }
 
   dynamic createCircularPercentIndicator(int capacity, int ocupancy) {
+    print(capacity);
+    print(ocupancy);
+    print(DateTime.now());
+    var color = Colors.black;
+    print(ocupancy / capacity);
     if (capacity != 0) {
+      double percentage = ocupancy / capacity;
+      if (percentage > 0) {
+        color = Colors.green;
+      }
+      if (percentage > 0.25) {
+        color = Colors.yellow;
+      }
+      if (percentage > 0.5) {
+        color = Colors.orange;
+      }
+
+      if (percentage > 0.75) {
+        color = Colors.red;
+      }
+
+      print(color);
       return CircularPercentIndicator(
         radius: 100.0,
         lineWidth: 10.0,
-        percent: ocupancy / capacity,
-        center: new Text((ocupancy / capacity * 100).toStringAsFixed(1) + '%'),
-        progressColor: Colors.green,
+        percent: percentage,
+        center: new Text((percentage * 100).toStringAsFixed(1) + '%'),
+        progressColor: color,
       );
     } else {
       return CircularPercentIndicator(
@@ -153,7 +175,7 @@ class CustomDetailParking extends StatelessWidget {
         lineWidth: 10.0,
         percent: 0,
         center: new Text("NA"),
-        progressColor: Colors.green,
+        progressColor: color,
       );
     }
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/CreateAcount.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/CreateAcount.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/RestorePasword.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:hello_world_flutter/Screens/RestorePasword.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
 class Home extends StatelessWidget {

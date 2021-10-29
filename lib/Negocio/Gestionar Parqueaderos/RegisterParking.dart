@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/Perfil.dart';
+import 'package:hello_world_flutter/Negocio/HomeFlasPark.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
-import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
-import 'package:hello_world_flutter/Screens/PayOut.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 

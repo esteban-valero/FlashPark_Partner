@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:hello_world_flutter/Screens/CreateAcount.dart';
-import 'package:hello_world_flutter/Screens/HomePage.dart';
-import 'package:hello_world_flutter/Screens/HomeFlasPark.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/CreateAcount.dart';
+import 'package:hello_world_flutter/Negocio/HomeFlasPark.dart';
+import 'package:hello_world_flutter/Negocio/HomePage.dart';
 import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 

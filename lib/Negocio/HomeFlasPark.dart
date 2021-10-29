@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world_flutter/Screens/PayOut.dart';
-import 'package:hello_world_flutter/Screens/Perfil.dart';
-import 'package:hello_world_flutter/Screens/RegisterParking.dart';
-import 'package:hello_world_flutter/Screens/ViewParkings.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Parqueaderos/RegisterParking.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
@@ -37,7 +34,7 @@ class HomeFlashPark extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Welcome, " + "!" + "name" + "!",
+            "Bienvenido de nuevo",
             style: TextStyles.appPartnerTextStyle
                 .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
           ),

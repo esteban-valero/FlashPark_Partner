@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -27,6 +28,10 @@ class AuthService {
 
       await updateUserName(name, authResult.user);
 
+      final ref = FirebaseStorage.instance.ref().child('PeopleIcon.png');
+// no need of the file extension, the name will do fine.
+      var url = await ref.getDownloadURL();
+
       firestoreInstance
           .collection("Partners")
           .doc(FirebaseAuth.instance.currentUser.uid)
@@ -35,7 +40,8 @@ class AuthService {
         "Email": email,
         "Pasword": password,
         "Phone": phone,
-        "UserID": FirebaseAuth.instance.currentUser.uid
+        "UserID": FirebaseAuth.instance.currentUser.uid,
+        'image': url
       }).then((_) {
         print("Success!");
       });
@@ -65,18 +71,26 @@ class AuthService {
   //register Parking
   Future registerParking(String nombre, String adress, String cars,
       String motos, String scooters, String bicis) {
-    firestoreInstance
+    String idParking = firestoreInstance
         .collection("Partners")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection("Parkings")
         .doc()
+        .id;
+
+    firestoreInstance
+        .collection("Partners")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("Parkings")
+        .doc(idParking)
         .set({
       "Name": nombre,
       "address": adress,
-      "Car Capacity": cars,
-      "Motorcycle Capacity": motos,
-      "Scooters Capacity": scooters,
-      "Bike Capacity": bicis
+      "Car Capacity": int.parse(cars),
+      "Motorcycle Capacity": int.parse(motos),
+      "Scooters Capacity": int.parse(scooters),
+      "Bike Capacity": int.parse(bicis),
+      "IDParking": idParking
     });
     print("Parking Register");
   }
