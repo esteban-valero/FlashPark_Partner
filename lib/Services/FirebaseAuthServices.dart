@@ -64,7 +64,7 @@ class AuthService {
           email: email, password: password);
       return "Signed in";
     } on FirebaseAuthException catch (e) {
-      return Future.error(e.message.toString());
+      return e.toString();
     }
   }
 

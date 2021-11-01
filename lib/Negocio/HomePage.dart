@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/CreateAcount.dart';
 import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/RestorePasword.dart';
@@ -52,8 +53,26 @@ class Home extends StatelessWidget {
             final auth = Provider.of(context).auth;
             String response = await auth.signIn(
                 emailController.text.trim(), passwordController.text.trim());
-            print(response);
-            Navigator.of(context).pushReplacementNamed('/home');
+            print("REspuesta $response");
+            if (response != "Signed in") {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: showError(response),
+                      actions: [
+                        FlatButton(
+                          child: Text("Ok"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  });
+            } else
+              Navigator.of(context).pushReplacementNamed('/home');
           }
         },
         child: Text("Login",
@@ -135,6 +154,15 @@ class Home extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+Widget showError(String response) {
+  switch (response) {
+    case '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.':
+      return Text("Nombre de usuario o contraseña incorrectos");
+      break;
+    default:
   }
 }
 

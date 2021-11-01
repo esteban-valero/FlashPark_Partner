@@ -21,6 +21,7 @@ class CreateAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    bool show = false;
 
     String validatePassword(String value) {
       //print("valor $value passsword ${passwordController.text}");
@@ -104,15 +105,41 @@ class CreateAccount extends StatelessWidget {
         onPressed: () async {
           if (keyForm.currentState.validate()) {
             final auth = Provider.of(context).auth;
-            if (await auth.signUp(
-                    emailController.text.trim(),
-                    passwordController.text.trim(),
-                    nameController.text.trim(),
-                    phonrController.text.trim()) ==
-                "Signed UP") {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeFlashPark()));
-            }
+
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('¡Atencion!'),
+                content: const Text(
+                    '¿Aceptas terminos, condiciones y politicas de privacidad?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      show = true;
+                      Navigator.pop(context, 'Cancel');
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      if (await auth.signUp(
+                              emailController.text.trim(),
+                              passwordController.text.trim(),
+                              nameController.text.trim(),
+                              phonrController.text.trim()) ==
+                          "Signed UP") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeFlashPark()));
+                      } else
+                        CircularProgressIndicator();
+                    },
+                    child: const Text('Acepto'),
+                  ),
+                ],
+              ),
+            );
 
             keyForm.currentState.reset();
           }
@@ -149,7 +176,7 @@ class CreateAccount extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Container(
-              height: 700,
+              height: 750,
               width: 350,
               padding: EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.only(top: 250, left: 20),
