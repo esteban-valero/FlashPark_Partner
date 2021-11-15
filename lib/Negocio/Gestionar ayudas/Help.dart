@@ -11,47 +11,63 @@ class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Ayuda",
-            style: TextStyles.appPartnerTextStyle
-                .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.orange,
-          toolbarHeight: 70,
-          centerTitle: true,
+      appBar: AppBar(
+        title: Text(
+          "Ayuda",
+          style: TextStyles.appPartnerTextStyle
+              .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomImageFPHome(),
-              Text("Partner",
-                  style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 50)),
-              SizedBox(
-                height: 15,
-              ),
-              Text("Preguntas Frecuentes",
-                  style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 30)),
-              SizedBox(
-                height: 15,
-              ),
-              question(context, "¿Cómo editar mi perfil?", VideoApp()),
-              SizedBox(
-                height: 10,
-              ),
-              question(context, "¿Cómo agregar un parqueadero?", VideoApp()),
-              SizedBox(
-                height: 10,
-              ),
-              question(context, "¿Cómo ver mis parqueaderos?", VideoApp()),
-              SizedBox(
-                height: 10,
-              ),
-              question(context, "¿Cómo ver las reservas?", VideoApp()),
-            ],
-          ),
+        backgroundColor: Colors.orange,
+        toolbarHeight: 70,
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomImageFPHome(),
+            Text("Partner",
+                style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 50)),
+            SizedBox(
+              height: 15,
+            ),
+            Text("Preguntas Frecuentes",
+                style: TextStyles.appPartnerTextStyle.copyWith(fontSize: 30)),
+            SizedBox(
+              height: 15,
+            ),
+            question(
+                context,
+                "¿Cómo editar mi perfil?",
+                VideoApp(
+                    "https://firebasestorage.googleapis.com/v0/b/flashpark-8dd19.appspot.com/o/Manuales%2Fver%20y%20editar%20perfil.mp4?alt=media&token=55578a5f-da3c-48f1-9010-3391461f0d0c")),
+            SizedBox(
+              height: 10,
+            ),
+            question(
+                context,
+                "¿Cómo agregar un parqueadero?",
+                VideoApp(
+                    'https://firebasestorage.googleapis.com/v0/b/flashpark-8dd19.appspot.com/o/Manuales%2FRegistrarParqueaderos.mp4?alt=media&token=c560a95a-dea3-4ed1-9887-a04ec6443d68')),
+            SizedBox(
+              height: 10,
+            ),
+            question(
+                context,
+                "¿Cómo ver mis parqueaderos?",
+                VideoApp(
+                    'https://firebasestorage.googleapis.com/v0/b/flashpark-8dd19.appspot.com/o/Manuales%2FVerParqueaderos.mp4?alt=media&token=77af32c6-ce74-4648-9202-ddf6e318a7b0')),
+            SizedBox(
+              height: 10,
+            ),
+            question(
+                context,
+                "¿Cómo ver las reservas?",
+                VideoApp(
+                    'https://firebasestorage.googleapis.com/v0/b/flashpark-8dd19.appspot.com/o/Manuales%2FRegistrarParqueaderos.mp4?alt=media&token=c560a95a-dea3-4ed1-9887-a04ec6443d68')),
+          ],
         ),
-        drawer: Menu().getDrawer(context));
+      ),
+    );
   }
 
   Material question(BuildContext context, String question, dynamic page) {

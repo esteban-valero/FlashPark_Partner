@@ -58,7 +58,7 @@ class Menu {
                           ],
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               image: NetworkImage(
                                 user.image,
                               ))),

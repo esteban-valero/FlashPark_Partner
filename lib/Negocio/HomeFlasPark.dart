@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Negocio/Gestionar%20Parqueaderos/RegisterParking.dart';
+import 'package:hello_world_flutter/Negocio/HomePage.dart';
 import 'package:hello_world_flutter/common/custom_FlashParkhome_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
@@ -25,6 +26,30 @@ class HomeFlashPark extends StatelessWidget {
           );
         },
         child: Text("Registra Tu Parqueadero",
+            textAlign: TextAlign.center,
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+    final logoutButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(40.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        color: Colors.orange,
+        minWidth: MediaQuery.of(context).size.width / 2,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () async {
+          final auth = Provider.of(context).auth;
+          await auth.signOut();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home(),
+            ),
+          );
+        },
+        child: Text("Cerrar Sesion",
             textAlign: TextAlign.center,
             style: TextStyles.appPartnerTextStyle
                 .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -61,7 +86,11 @@ class HomeFlashPark extends StatelessWidget {
                     SizedBox(
                       height: 50,
                     ),
-                    registerButton
+                    registerButton,
+                    SizedBox(
+                      height: 50,
+                    ),
+                    logoutButton
                   ],
                 ),
               )

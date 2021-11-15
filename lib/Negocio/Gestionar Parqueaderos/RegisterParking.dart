@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hello_world_flutter/Assistants/AssistantMethods.dart';
+import 'package:hello_world_flutter/Model/Address.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20Parqueaderos/SearchScreen.dart';
 import 'package:hello_world_flutter/Negocio/HomeFlasPark.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Menu_widget.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
 
-class RegisterParking extends StatelessWidget {
+class RegisterParking extends StatefulWidget {
+  @override
+  State<RegisterParking> createState() => _RegisterParkingState();
+}
+
+class _RegisterParkingState extends State<RegisterParking> {
+  Address adressSelected = new Address();
   final TextEditingController nameController = TextEditingController();
 
   final TextEditingController adressController = TextEditingController();
@@ -34,19 +44,23 @@ class RegisterParking extends StatelessWidget {
           )),
     );
 
-    final direccionField = TextField(
-      controller: adressController,
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Dirección de tu parqueadero",
-          labelText: "Dirección",
-          labelStyle: TextStyle(color: Colors.black),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
+    final direcctionfield = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(40.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        color: Colors.orange,
+        minWidth: MediaQuery.of(context).size.width / 2,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () async {
+          searchDysplaySelection(context);
+        },
+        child: Text(
+            "Ubicacion:  ${adressSelected.placeName != null ? '\n' + adressSelected.placeName : ''}",
+            textAlign: TextAlign.center,
+            style: TextStyles.appPartnerTextStyle
+                .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
 
     final carsCapacityField = TextField(
@@ -119,13 +133,19 @@ class RegisterParking extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           final auth = Provider.of(context).auth;
+          Position pos = new Position(
+              latitude: adressSelected.latitud,
+              longitude: adressSelected.longitud);
+          String completeAdds =
+              await AssistantMethods.searchCoordinatesAddress(pos, context);
           await auth.registerParking(
               nameController.text.trim(),
-              adressController.text.trim(),
+              completeAdds,
               carsController.text.trim(),
               motosController.text.trim(),
               scootersController.text.trim(),
-              bicisController.text.trim());
+              bicisController.text.trim(),
+              adressSelected);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HomeFlashPark()),
@@ -173,7 +193,7 @@ class RegisterParking extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
+              /*Container(
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -182,16 +202,16 @@ class RegisterParking extends StatelessWidget {
                       fit: BoxFit.fill),
                 ),
               ),
-              loadImageButton,
+              loadImageButton,*/
               Container(
-                width: 350,
+                padding: EdgeInsets.all(25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     SizedBox(height: 20),
                     nameField,
                     SizedBox(height: 20),
-                    direccionField,
+                    direcctionfield,
                     SizedBox(height: 20),
                     carsCapacityField,
                     SizedBox(height: 20),
@@ -210,5 +230,21 @@ class RegisterParking extends StatelessWidget {
           ),
         ),
         drawer: Menu().getDrawer(context));
+  }
+
+  void searchDysplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final Address result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Search()),
+    );
+    if (result != null) {
+      print('Resultado');
+      print(result.placeName);
+      setState(() {
+        adressSelected = result;
+      });
+    }
   }
 }

@@ -13,6 +13,7 @@ class ViewReservatios extends StatefulWidget {
 }
 
 class _ViewReservatios extends State<ViewReservatios> {
+  var color;
   List<Reserve> reserves = [];
   @override
   Widget build(BuildContext context) {
@@ -31,11 +32,19 @@ class _ViewReservatios extends State<ViewReservatios> {
         child: Column(
           children: <Widget>[
             Container(
-                padding: EdgeInsets.all(50),
+                padding: EdgeInsets.only(top: 30),
                 child: Text(
                   parking.name,
                   style: TextStyles.appPartnerTextStyle
                       .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+                )),
+            Container(
+                padding: EdgeInsets.only(bottom: 40),
+                child: Text(
+                  parking.addrs,
+                  style: TextStyles.appPartnerTextStyle.copyWith(
+                    fontSize: 20,
+                  ),
                 )),
             FutureBuilder(
                 future: _getReservationData(parking),
@@ -47,16 +56,71 @@ class _ViewReservatios extends State<ViewReservatios> {
                           itemCount: reserves.length,
                           itemBuilder: (context, index) {
                             return Container(
-                              child: ListTile(
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                title: Text(
-                                  reserves[index].estado,
-                                  style:
-                                      TextStyles.appPartnerTextStyle.copyWith(),
-                                  textAlign: TextAlign.center,
+                              child: Dismissible(
+                                key: Key(reserves[index].reserID),
+                                background: Container(
+                                  color: Colors.green,
+                                  child: Icon(Icons.check),
                                 ),
-                                onTap: () {
-                                  /* Navigator.push(
+                                secondaryBackground: Container(
+                                  color: Colors.red,
+                                  child: Icon(Icons.cancel),
+                                ),
+                                onDismissed: (D) async {
+                                  if (D == DismissDirection.endToStart) {
+                                    print("Cambiando a terminado");
+                                    reserves[index].estado = 'Terminado';
+                                    await Provider.of(context)
+                                        .db
+                                        .collection('Reservations')
+                                        .doc(reserves[index].reserID.trim())
+                                        .update(reserves[index].toJson())
+                                        .whenComplete(() => setState(() {}))
+                                        .catchError((error) =>
+                                            print('Failed to update $error'));
+                                  }
+                                  if (D == DismissDirection.startToEnd) {
+                                    reserves[index].estado = 'En curso';
+                                    await Provider.of(context)
+                                        .db
+                                        .collection('Reservations')
+                                        .doc(reserves[index].reserID.trim())
+                                        .update(reserves[index].toJson())
+                                        .whenComplete(() => setState(() {}))
+                                        .catchError((error) =>
+                                            print('Failed to update $error'));
+                                  }
+                                },
+                                child: ListTile(
+                                  trailing: Icon(
+                                    reserves[index].vehiculo == 'Carro'
+                                        ? Icons.car_repair
+                                        : reserves[index].vehiculo == 'Moto'
+                                            ? Icons.motorcycle
+                                            : reserves[index].vehiculo ==
+                                                    'Bicicleta'
+                                                ? Icons.pedal_bike
+                                                : Icons.electric_scooter,
+                                    color: reserves[index].estado == 'nueva'
+                                        ? Colors.orangeAccent
+                                        : reserves[index].estado == 'En curso'
+                                            ? Colors.green
+                                            : Colors.red,
+                                  ),
+                                  subtitle: Text(
+                                    " ${reserves[index].time}  / ${reserves[index].hora} ",
+                                    style: TextStyles.appPartnerTextStyle
+                                        .copyWith(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  title: Text(
+                                    " ${reserves[index].placa} ",
+                                    style: TextStyles.appPartnerTextStyle
+                                        .copyWith(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  onTap: () {
+                                    /* Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => CustomDetailParking(
@@ -64,7 +128,8 @@ class _ViewReservatios extends State<ViewReservatios> {
                                       ),
                                     ),
                                   );*/
-                                },
+                                  },
+                                ),
                               ),
                               decoration: BoxDecoration(
                                   border: Border(
@@ -77,210 +142,6 @@ class _ViewReservatios extends State<ViewReservatios> {
                     return CircularProgressIndicator();
                   }
                 }),
-            Container(
-              alignment: Alignment.center,
-              width: 350,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Placa",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "xxx",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 25),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Horario",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "xx:xx",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Estado",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "Confirmado",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 20, color: Colors.green),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: 350,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Placa",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "xxx",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 25),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Horario",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "xx:xx",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Estado",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "Pendiente",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 20, color: Colors.red),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: 350,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Placa",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "xxx",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 25),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Horario",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "xx:xx",
-                            style: TextStyles.appPartnerTextStyle
-                                .copyWith(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Estado",
-                            style: TextStyles.appPartnerTextStyle.copyWith(),
-                          ),
-                          Text(
-                            "Inactivo",
-                            style: TextStyles.appPartnerTextStyle.copyWith(
-                                fontSize: 20, color: Colors.greenAccent),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.orange))),
-            ),
           ],
         ),
       ),
@@ -290,10 +151,11 @@ class _ViewReservatios extends State<ViewReservatios> {
   _getReservationData(Parking parking) async {
     reserves = [];
     //print(Provider.of(context).db.collection('Partners').doc(uid).get());
+    print('TRY TO GET RESERVATIONS for ${parking.idParking}');
     await Provider.of(context)
         .db
         .collection("Reservations")
-        .where('IDParking', '==', parking.name)
+        .where('IDParking', isEqualTo: parking.idParking)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
@@ -302,9 +164,15 @@ class _ViewReservatios extends State<ViewReservatios> {
             result.data()['IDParking'],
             result.data()['IDUser'],
             result.data()['Time'],
-            result.data()['vehiculo']);
+            result.data()['vehiculo'],
+            result.data()['Hora'],
+            result.data()['placa'],
+            result.data()['reserID']);
+        print('placa');
+        print(r.placa);
         reserves.add(r);
       });
     });
+    print('TRY TO GET RESERVATIONS');
   }
 }

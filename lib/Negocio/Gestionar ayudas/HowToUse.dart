@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class VideoApp extends StatefulWidget {
+  String video = '';
+  VideoApp(String s) {
+    this.video = s;
+  }
+
   @override
   _VideoAppState createState() => _VideoAppState();
 }
@@ -15,8 +20,7 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://firebasestorage.googleapis.com/v0/b/flashpark-8dd19.appspot.com/o/Manuales%2FFlashParkPartner.mp4?alt=media&token=dca69053-3a62-41e1-9b4a-a5012561a81b')
+    _controller = VideoPlayerController.network(widget.video)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});

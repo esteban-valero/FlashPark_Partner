@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Model/Parking.dart';
 import 'package:hello_world_flutter/common/customDetailParking.dart';
@@ -12,6 +13,11 @@ class ViewParking extends StatefulWidget {
 }
 
 class _ViewParkingState extends State<ViewParking> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   List<Parking> parkings;
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,9 @@ class _ViewParkingState extends State<ViewParking> {
                           itemBuilder: (context, index) {
                             return Container(
                               child: ListTile(
-                                trailing: Icon(Icons.keyboard_arrow_right),
+                                trailing: Icon(
+                                  Icons.keyboard_arrow_right,
+                                ),
                                 title: Text(
                                   parkings[index].name,
                                   style:
@@ -90,6 +98,7 @@ class _ViewParkingState extends State<ViewParking> {
   _getParkingData() async {
     parkings = [];
     final uid = await Provider.of(context).auth.getCurrentUID();
+
     //print(Provider.of(context).db.collection('Partners').doc(uid).get());
 
     await Provider.of(context)

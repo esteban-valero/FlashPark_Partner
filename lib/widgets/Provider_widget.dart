@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
+import 'package:hello_world_flutter/widgets/appData.dart';
 
 class Provider extends InheritedWidget {
   final AuthService auth;
   final db;
+  final AppData appData;
 
-  Provider({Key key, Widget child, this.auth, this.db})
+  Provider({Key key, Widget child, this.auth, this.db, this.appData})
       : super(key: key, child: child);
 
   @override
@@ -13,6 +15,6 @@ class Provider extends InheritedWidget {
     return true;
   }
 
-  static Provider of(BuildContext context) =>
+  static Provider of(BuildContext context, {bool listen}) =>
       context.dependOnInheritedWidgetOfExactType<Provider>();
 }

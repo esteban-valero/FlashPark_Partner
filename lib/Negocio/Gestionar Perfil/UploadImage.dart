@@ -87,7 +87,7 @@ class _UploaderState extends State<Uploader> {
     } else {
       // Allows user to decide when to start the upload
       return TextButton.icon(
-        label: Text('Upload to Firebase'),
+        label: Text('Cargar'),
         icon: Icon(Icons.cloud_upload),
         onPressed: _startUpload,
       );

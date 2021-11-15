@@ -34,7 +34,7 @@ class TermsOfUse extends StatelessWidget {
                   );
                 },
             ),
-            TextSpan(text: "y nuestra"),
+            TextSpan(text: "y nuestra "),
             TextSpan(
               text: "Politica de privacidad! ",
               style: TextStyle(fontWeight: FontWeight.bold),

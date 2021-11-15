@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hello_world_flutter/Model/Address.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -29,8 +31,10 @@ class AuthService {
       await updateUserName(name, authResult.user);
 
       final ref = FirebaseStorage.instance.ref().child('PeopleIcon.png');
-// no need of the file extension, the name will do fine.
+
       var url = await ref.getDownloadURL();
+      var status = await OneSignal.shared.getPermissionSubscriptionState();
+      String tokenId = status.subscriptionStatus.userId;
 
       firestoreInstance
           .collection("Partners")
@@ -41,7 +45,8 @@ class AuthService {
         "Pasword": password,
         "Phone": phone,
         "UserID": FirebaseAuth.instance.currentUser.uid,
-        'image': url
+        'image': url,
+        "tokenId": tokenId
       }).then((_) {
         print("Success!");
       });
@@ -70,7 +75,7 @@ class AuthService {
 
   //register Parking
   Future registerParking(String nombre, String adress, String cars,
-      String motos, String scooters, String bicis) {
+      String motos, String scooters, String bicis, Address direccion) {
     String idParking = firestoreInstance
         .collection("Partners")
         .doc(FirebaseAuth.instance.currentUser.uid)
@@ -90,7 +95,22 @@ class AuthService {
       "Motorcycle Capacity": int.parse(motos),
       "Scooters Capacity": int.parse(scooters),
       "Bike Capacity": int.parse(bicis),
-      "IDParking": idParking
+      "IDParking": idParking,
+      'Latitud': direccion.latitud,
+      'Longitud': direccion.longitud
+    });
+
+    firestoreInstance.collection("Parkings").doc(idParking).set({
+      "Name": nombre,
+      "address": adress,
+      "Car Capacity": int.parse(cars),
+      "Motorcycle Capacity": int.parse(motos),
+      "Scooters Capacity": int.parse(scooters),
+      "Bike Capacity": int.parse(bicis),
+      "IDParking": idParking,
+      "IDPartner": FirebaseAuth.instance.currentUser.uid,
+      'Latitud': direccion.latitud,
+      'Longitud': direccion.longitud
     });
     print("Parking Register");
   }

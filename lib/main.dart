@@ -6,6 +6,7 @@ import 'package:hello_world_flutter/Negocio/HomeFlasPark.dart';
 import 'package:hello_world_flutter/Negocio/HomePage.dart';
 import 'package:hello_world_flutter/Services/FirebaseAuthServices.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,8 +14,23 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    configOneSignel();
+  }
+
+  void configOneSignel() {
+    OneSignal.shared.init("1be689c2-7370-4b38-8832-7795a9cad135");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Provider(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/CreateAcount.dart';
 import 'package:hello_world_flutter/Negocio/Gestionar%20Cuentas/RestorePasword.dart';
+import 'package:hello_world_flutter/Negocio/Gestionar%20ayudas/Help.dart';
 import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 import 'package:hello_world_flutter/widgets/Provider_widget.dart';
@@ -146,6 +147,20 @@ class Home extends StatelessWidget {
                     forgotPassword,
                     Text("¿No eres miembro?"),
                     createAccount,
+                    Text("¿Necesitas ayuda?"),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Help(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.help,
+                          color: Colors.orange,
+                        )),
                   ],
                 ),
               ),
@@ -163,6 +178,7 @@ Widget showError(String response) {
       return Text("Nombre de usuario o contraseña incorrectos");
       break;
     default:
+      return Text("Nombre de usuario o contraseña incorrectos");
   }
 }
 

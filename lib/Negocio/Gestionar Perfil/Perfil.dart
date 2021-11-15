@@ -100,7 +100,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Created: ${DateFormat('MM/dd/yyyy').format(authData.metadata.creationTime)}",
+                          "Creado: ${DateFormat('MM/dd/yyyy').format(authData.metadata.creationTime)}",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -182,7 +182,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget adminFeature() {
     if (_isAdmin == true) {
-      return Text("You are an admin", style: TextStyles.appPartnerTextStyle);
+      return Text("Eres administrador", style: TextStyles.appPartnerTextStyle);
     } else {
       return Container();
     }
@@ -190,6 +190,8 @@ class _ProfileViewState extends State<ProfileView> {
 
   _getProfileData() async {
     final uid = await Provider.of(context).auth.getCurrentUID();
+    print("uid:");
+    print(uid);
     //print(Provider.of(context).db.collection('Partners').doc(uid).get());
     await Provider.of(context)
         .db

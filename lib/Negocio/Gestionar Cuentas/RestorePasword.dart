@@ -5,28 +5,27 @@ import 'package:hello_world_flutter/common/custom_FlashPark_Icon.dart';
 import 'package:hello_world_flutter/utils/text_styles.dart';
 
 class RestorePassword extends StatelessWidget {
-  const RestorePassword({Key key}) : super(key: key);
+  final GlobalKey<FormState> keyForm = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
     final height = MediaQuery.of(context).size.height;
-    final GlobalKey<FormState> keyForm = new GlobalKey();
+
     final auth = FirebaseAuth.instance;
 
     final emailField = TextFormField(
-      controller: emailController,
-      obscureText: false,
-      style: TextStyles.appPartnerTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.orange),
-          )),
-      validator: validateEmail,
-    );
+        controller: emailController,
+        obscureText: false,
+        style: TextStyles.appPartnerTextStyle,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "E-mail",
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.orange),
+            )),
+        validator: validateEmail);
 
     final loginNow = TextButton(
       onPressed: () => {Navigator.pop(context)},
@@ -70,7 +69,7 @@ class RestorePassword extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Container(
-              height: 500,
+              height: 300,
               width: 350,
               padding: EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.only(top: 250, left: 20),
@@ -78,22 +77,26 @@ class RestorePassword extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 100.0),
-                  Text("¡Recupera tu contraseña!",
-                      style: TextStyles.appPartnerTextStyle.copyWith(
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
-                  SizedBox(height: 30.0),
-                  emailField,
-                  SizedBox(height: 20.0),
-                  registerButton,
-                  SizedBox(height: 20.0),
-                  Text("¿Ya tienes una cuenta?"),
-                  loginNow
-                ],
+              child: new Form(
+                key: keyForm,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Text(
+                      'Recupera tu contraseña',
+                      style: TextStyles.appPartnerTextStyle
+                          .copyWith(color: Colors.orange),
+                    ),
+                    SizedBox(height: 30.0),
+                    emailField,
+                    SizedBox(height: 20.0),
+                    registerButton,
+                    SizedBox(height: 10.0),
+                    loginNow
+                  ],
+                ),
               ),
             ),
           ),
